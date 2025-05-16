@@ -1,11 +1,29 @@
 import { useState } from 'react';
-import { Search, Bookmark, User } from 'lucide-react';
+import { Search, Bookmark, User, LogOut } from 'lucide-react';
 import { FaBookmark } from "react-icons/fa6";
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/features/authSlice';
+import { useNavigate } from 'react-router-dom';
+
 export default function Navbar() {
     const [searchText, setSearchText] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleSearchChange = (e) => {
         setSearchText(e.target.value);
+    };
+
+    // Logout Handler
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/login'); // Redirect to login page after logout
+    };
+
+    // Toggle Modal
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
     };
 
     return (
@@ -50,8 +68,37 @@ export default function Navbar() {
                     <button className="">
                         <User className="text-black" size={28} />
                     </button>
+
+                    {/* Logout Icon */}
+                    <button onClick={toggleModal} className="flex items-center gap-1">
+                        <LogOut size={20} className='text-blue-500' />
+                    </button>
                 </div>
             </div>
+
+            {/* Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-[9999]">
+                    <div className="bg-white p-6 rounded-lg w-96">
+                        <h2 className="text-xl font-semibold mb-4">Confirm Logout</h2>
+                        <p className="mb-6">Are you sure you want to log out?</p>
+                        <div className="flex justify-end gap-4">
+                            <button
+                                onClick={toggleModal}
+                                className="px-4 py-2 bg-gray-300 rounded-md"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleLogout}
+                                className="px-4 py-2 bg-red-500 text-white rounded-md"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
