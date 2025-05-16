@@ -2,7 +2,6 @@ import React from 'react'
 import { Routes as Router, Route } from 'react-router-dom'
 import { AuthScreen, HighLevelProduct, Home, PaperTrim, Patches, Zipper } from '../screens/screens'
 import { Navbar, PrivateRoute } from '../components/components'
-import { Inquiries } from '../../../frontend/src/assets/icons/icons'
 import { useLocation } from 'react-router-dom'
 import InquiryPage from '../screens/InquiryPage/InquiryPage'
 const Routes = () => {
