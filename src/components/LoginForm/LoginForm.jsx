@@ -75,7 +75,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
 
                     <button
                         type="submit"
-                        className="w-full bg-black text-white py-3 rounded-xl flex items-center justify-center"
+                        className="w-full bg-black cursor-pointer text-white py-3 rounded-xl flex items-center justify-center"
                     >
                         {isLoading ? (<div className="flex items-center justify-center w-8 h-8 rounded-full border-y-6 border-teal-800 animate-spin     "></div>) : 'Sign In'}
                     </button>

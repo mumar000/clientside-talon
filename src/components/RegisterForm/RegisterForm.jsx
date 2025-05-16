@@ -3,7 +3,7 @@ import { useState } from "react";
 import TalonLogo from "../../assets/logo.png";
 import { useRegisterMutation } from "../../store/features/userApiSlice";
 import { toast } from "react-toastify";
-
+import { Navigate } from "react-router-dom";
 const RegisterForm = ({ onSwitchToLogin }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -22,7 +22,10 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             }
             const res = await register({ name, email, password }).unwrap()
             toast.success(res?.data?.message || 'Successfully Registerd')
-            navigate('/login')
+            if (res?.success) {
+                onSwitchToLogin()
+            }
+
         } catch (err) {
             toast.error(err?.data?.message || err.error)
         }

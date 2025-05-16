@@ -12,12 +12,7 @@ const categoriesCard = [
     { image: image2, title: 'Zippers', route: '/zippers' },
     { image: image3, title: 'Paper Trim', route: '/papertrim' },
     { image: image4, title: 'Patches', route: '/patches' },
-    { image: image1, title: 'Patches', route: '/patches' },
-    { image: image3, title: 'Patches', route: '/patches' },
-    { image: image2, title: 'Patches', route: '/patches' },
-    { image: image4, title: 'Patches', route: '/patches' },
-    { image: image1, title: 'Patches', route: '/patches' },
-    { image: image3, title: 'Patches', route: '/patches' },
+
 ];
 
 const Home = () => {
