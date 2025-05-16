@@ -4,7 +4,7 @@ import { FaBookmark } from "react-icons/fa6";
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/features/authSlice';
 import { useNavigate } from 'react-router-dom';
-
+import { useSelector } from 'react-redux'
 export default function Navbar() {
     const [searchText, setSearchText] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,6 +15,8 @@ export default function Navbar() {
         setSearchText(e.target.value);
     };
 
+    const { userInfo } = useSelector((state) => state.auth)
+    console.log("User", userInfo)
     // Logout Handler
     const handleLogout = () => {
         dispatch(logout());
@@ -38,7 +40,7 @@ export default function Navbar() {
                         />
                     </div>
                     <div>
-                        <p className="text-gray-700 font-medium">Welcome, Amanda</p>
+                        <p className="text-gray-700 font-medium">Welcome, {userInfo?.name}</p>
                         <p className="text-gray-400 text-sm">Tue, 07 June 2025</p>
                     </div>
                 </div>
