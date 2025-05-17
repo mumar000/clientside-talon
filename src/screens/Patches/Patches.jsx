@@ -6,8 +6,10 @@ import { useState } from 'react'
 import { Image, Pagination, Spin, Empty, Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { ScreenLoader } from '../../components/components'
+import { useEffect } from 'react'
 const Patches = () => {
     const [category, setCategory] = useState('Patches');
+    const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 50;
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
@@ -21,10 +23,14 @@ const Patches = () => {
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
-        // Scroll to top of grid when changing page
         document.getElementById('gallery-grid').scrollIntoView({ behavior: 'smooth' });
     };
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false)
+        }, 2000)
+    }, [category])
     return (
         <>
             {loading ? (<ScreenLoader />) : (

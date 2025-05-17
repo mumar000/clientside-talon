@@ -6,8 +6,10 @@ import { useState } from 'react'
 import { Image, Pagination, Spin, Empty, Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { ScreenLoader } from '../../components/components'
+import { useEffect } from 'react'
 const HighLevelProduct = () => {
     const [category, setCategory] = useState('High Level Product');
+    const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 50;
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
