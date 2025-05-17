@@ -3,7 +3,7 @@ import { Search, Bookmark, User, LogOut } from 'lucide-react';
 import { FaBookmark } from "react-icons/fa6";
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/features/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 export default function Navbar() {
     const [searchText, setSearchText] = useState('');
@@ -17,13 +17,12 @@ export default function Navbar() {
 
     const { userInfo } = useSelector((state) => state.auth)
     console.log("User", userInfo)
-    // Logout Handler
+
     const handleLogout = () => {
         dispatch(logout());
-        navigate('/login'); // Redirect to login page after logout
+        navigate('/login');
     };
 
-    // Toggle Modal
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
@@ -60,6 +59,9 @@ export default function Navbar() {
                             <Search size={16} className="text-black" />
                         </div>
                     </div>
+                    <Link to='inquiry' className='cursor-pointer hover:text-cyan-500 transiton-all duration-300'>
+                        <h1>Inquiry Now</h1>
+                    </Link>
 
                     {/* Bookmark Icon */}
                     <button className="">

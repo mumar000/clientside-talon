@@ -37,15 +37,7 @@ const InquiryPage = () => {
                     </div>
                 </div>
 
-                <div className="mt-8 flex justify-center space-x-4">
-                    <button className="bg-gray-800 text-white px-4 py-2 rounded-sm">
-                        &lt;
-                    </button>
-                    <span className="flex items-center text-gray-600">8 / 22</span>
-                    <button className="bg-gray-800 text-white px-4 py-2 rounded-sm">
-                        &gt;
-                    </button>
-                </div>
+
             </div>
         </div>
 
