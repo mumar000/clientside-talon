@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSubmitInquiryMutation } from '../../store/features/userApiSlice';
+import { toast } from 'react-toastify';
 // Form Component
 const InquiryForm = () => {
     const [formData, setFormData] = useState({
@@ -10,7 +11,19 @@ const InquiryForm = () => {
         phone: '',
         comments: ''
     });
+
     const [submitForm, { isLoading }] = useSubmitInquiryMutation()
+
+    const reset = () => {
+        setFormData({
+            areaOfInterest: '',
+            fullName: '',
+            company: '',
+            companyEmail: '',
+            phone: '',
+            comments: ''
+        })
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -25,7 +38,8 @@ const InquiryForm = () => {
         console.log('Form submitted:', formData);
         try {
             const res = await submitForm(formData).unwrap()
-            console.log("Successfully", res?.message)
+            toast.success(res?.message)
+            reset()
         } catch (err) {
             console.log("Error", err?.data?.message)
         }
@@ -129,8 +143,8 @@ const InquiryForm = () => {
             <div>
                 <button
                     type='submit'
-                    className='px-4 py-2 rounded-full bg-black text-white text-sm'>
-                    Submit Inquiry
+                    className='px-6 hover:bg-gray-800 flex items-center justify-center hover:scale-102 transition-all ease-in-out duration-300 cursor-pointer  py-3  rounded-full  bg-black text-white text-md '>
+                    {isLoading ? (<div className='w-8 h-8 rounded-full border-y-4 border-blue-300 animate-spin'></div>) : 'Submit Inquiry'}
                 </button>
             </div>
         </form>

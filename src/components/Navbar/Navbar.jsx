@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Search, Bookmark, User, LogOut } from 'lucide-react';
-import { FaBookmark } from "react-icons/fa6";
+import { Search, User, LogOut, HomeIcon } from 'lucide-react';
+import { FaBookmark, } from "react-icons/fa6";
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/features/authSlice';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Links } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 export default function Navbar() {
     const [searchText, setSearchText] = useState('');
@@ -47,6 +47,9 @@ export default function Navbar() {
                 {/* Right - Search & Icons */}
                 <div className="flex items-center px-4 mr-6 gap-2">
                     {/* Search Bar */}
+                    <Link to='/'>
+                        <HomeIcon size={25} className='text-first hover:text-black transition-all cursor-pointer' />
+                    </Link>
                     <div className="relative mr-2">
                         <input
                             type="text"
@@ -74,8 +77,8 @@ export default function Navbar() {
                     </button>
 
                     {/* Logout Icon */}
-                    <button onClick={toggleModal} className="flex items-center gap-1">
-                        <LogOut size={20} className='text-blue-500' />
+                    <button onClick={toggleModal} className="flex cursor-pointer  items-center gap-1">
+                        <LogOut size={25} className='text-blue-500 hover:scale-102 hover:text-blue-500 transition-all ease-in-out duration-300' />
                     </button>
                 </div>
             </div>
