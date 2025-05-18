@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { useSubmitInquiryMutation } from '../../store/features/userApiSlice';
 // Form Component
 const InquiryForm = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +10,7 @@ const InquiryForm = () => {
         phone: '',
         comments: ''
     });
+    const [submitForm, { isLoading }] = useSubmitInquiryMutation()
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,9 +20,15 @@ const InquiryForm = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Form submitted:', formData);
+        try {
+            const res = await submitForm(formData).unwrap()
+            console.log("Successfully", res?.message)
+        } catch (err) {
+            console.log("Error", err?.data?.message)
+        }
     };
 
     return (
@@ -118,6 +125,13 @@ const InquiryForm = () => {
                     rows="4"
                     className="appearance-none w-full bg-white  -gray-300 py-2 px-3 text-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-gray-200"
                 />
+            </div>
+            <div>
+                <button
+                    type='submit'
+                    className='px-4 py-2 rounded-full bg-black text-white text-sm'>
+                    Submit Inquiry
+                </button>
             </div>
         </form>
     );
