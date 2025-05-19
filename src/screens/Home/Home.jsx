@@ -115,8 +115,6 @@ const Home = () => {
             </div>
 
             {/* Decorative Elements */}
-            <div className="fixed top-20 right-10 w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 animate-pulse"></div>
-            <div className="fixed bottom-20 left-10 w-20 h-20 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-30 animate-pulse delay-1000"></div>
         </div>
     );
 };

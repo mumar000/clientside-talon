@@ -40,7 +40,6 @@ export default function Navbar() {
                     </div>
                     <div>
                         <p className="text-gray-700 font-medium">Welcome, {userInfo?.name}</p>
-                        <p className="text-gray-400 text-sm">Tue, 07 June 2025</p>
                     </div>
                 </div>
 
