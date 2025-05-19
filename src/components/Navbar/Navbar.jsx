@@ -71,9 +71,9 @@ export default function Navbar() {
                     </button>
 
                     {/* User Profile Icon */}
-                    <button className="">
+                    <Link to='/profile' className="">
                         <User className="text-black" size={28} />
-                    </button>
+                    </Link >
 
                     {/* Logout Icon */}
                     <button onClick={toggleModal} className="flex cursor-pointer  items-center gap-1">

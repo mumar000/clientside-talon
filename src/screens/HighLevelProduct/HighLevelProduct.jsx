@@ -79,12 +79,8 @@ const HighLevelProduct = () => {
                                     </h1>
                                     <div className="flex items-center space-x-4">
                                         <span className="text-white/90 text-lg font-light">
-                                            {total} pieces in collection
                                         </span>
-                                        <div className="w-1 h-1 bg-white/60 rounded-full"></div>
-                                        <span className="text-white/80 text-lg font-light">
-                                            Premium Quality
-                                        </span>
+
                                     </div>
                                 </div>
                             </div>
