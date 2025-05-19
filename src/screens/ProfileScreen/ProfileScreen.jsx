@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useGetProfileQuery } from '../../store/features/userApiSlice';
 
 const ProfileScreen = () => {
     const { userInfo } = useSelector((state) => state.auth)
+    const { data: profile, isLoading } = useGetProfileQuery(userInfo?._id)
     const [isEditing, setIsEditing] = useState(false);
     const [profileData, setProfileData] = useState({
-        name: userInfo.name,
-        email: userInfo.email,
-        password: '••••••••',
+        name: profile?.user?.name,
+        email: profile?.user?.email,
+        password: profile?.user?.password,
         profilePicture: '/api/placeholder/200/200'
     });
 
-    const [editData, setEditData] = useState({ ...profileData });
+    console.log("user", profile?.user?.name)
 
-
-    // const handleImageUpload = (event) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onload = (e) => {
-    //             setEditData({ ...editData, profilePicture: e.target.result });
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-cyan-300 via-teal-200 to-first">
@@ -81,6 +72,7 @@ const ProfileScreen = () => {
                                     <p className="text-gray-600 font-light">
                                         {profileData.email}
                                     </p>
+
                                 </div>
                             </div>
 
