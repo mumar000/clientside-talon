@@ -1,59 +1,122 @@
 import React from 'react';
-import image from '../../assets/hero.png';
-import image1 from '../../assets/hproduct.png';
-import image2 from '../../assets/zippers.png';
-import image3 from '../../assets/ptrim.png';
-import image4 from '../../assets/patches.png';
 import { Link } from 'react-router-dom';
-
+import image from '../../assets/hero.jpg';
+import image1 from '../../assets/boxes1.png';
+import image2 from '../../assets/boxes2.png';
+import image3 from '../../assets/boxes3.png';
+import image4 from '../../assets/boxes4.png';
 
 const categoriesCard = [
-    { image: image1, title: 'High Level Product', route: '/highlevel' },
-    { image: image2, title: 'Zippers', route: '/zippers' },
-    { image: image3, title: 'Paper Trim', route: '/papertrim' },
-    { image: image4, title: 'Patches', route: '/patches' },
-
+    { image: image1, title: 'High Level Product', route: '/highlevel', description: 'Premium quality materials' },
+    { image: image3, title: 'Zippers', route: '/zippers', description: 'Durable & stylish closures' },
+    { image: image4, title: 'Paper Trim', route: '/papertrim', description: 'Elegant finishing touches' },
+    { image: image2, title: 'Patches', route: '/patches', description: 'Creative design elements' },
 ];
 
 const Home = () => {
     return (
-        <div className='py-8  bg-gray-50 min-h-screen'>
-            <div className='flex flex-col items-center gap-2'>
-                <div>
-                    <img src={image} alt="Main Banner" />
-                </div>
-                <div className='w-full px-12'>
-                    <div className='w-full  rounded-xl bg-white min-h-100'>
-                        <div className='flex flex-col py-2 px-5'>
-                            <div className='flex flex-row items-center justify-between border-b-2 border-gray-300 pb-3 gap-2 '>
-                                <h1 className='text-xl font-medium'>Select Category</h1>
-                                <div>
-                                    <button className='px-2 py-1 text-xs bg-gray-200 rounded-lg'>
-                                        Filter By Category
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Cards Mapping */}
-                            <div className='grid lg:grid-cols-5 items-center gap-3  py-2'>
-                                {categoriesCard.map((category, index) => (
-                                    <Link to={category.route} key={index} className="relative w-64">
-                                        <div className="group  overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-gray-50">
-                                            <img
-                                                src={category.image}
-                                                alt={category.title}
-                                                className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-300"
-                                            />
-                                        </div>
-
-                                    </Link>
-                                ))}
-                            </div>
-
-                        </div>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+            {/* Hero Section */}
+            <div className="relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent z-10"></div>
+                <img
+                    src={image}
+                    alt="Hero Banner"
+                    className="w-full h-70 bg-center object-cover"
+                />
+                <div className="absolute inset-0 z-20 flex items-center justify-center">
+                    <div className="text-center text-white">
+                        <h1 className="text-5xl font-light mb-4 tracking-wide">
+                            Craft Excellence
+                        </h1>
+                        <p className="text-xl font-light opacity-90">
+                            Discover our curated collection
+                        </p>
                     </div>
                 </div>
             </div>
+
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-6 py-16">
+                {/* Header */}
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl font-light text-gray-800 mb-4">
+                        Our Collections
+                    </h2>
+                    <div className="w-24 h-0.5 bg-gray-400 mx-auto mb-6"></div>
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+                        Explore our carefully curated categories, each designed to inspire and elevate your creative projects
+                    </p>
+                </div>
+
+                {/* Gallery Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {categoriesCard.map((category, index) => (
+                        <Link
+                            to={category.route}
+                            key={index}
+                            className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white"
+                        >
+                            {/* Image Container */}
+                            <div className="relative overflow-hidden">
+                                <img
+                                    src={category.image}
+                                    alt={category.title}
+                                    className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                                {/* Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                                {/* Floating Badge */}
+
+                            </div>
+
+                            {/* Content */}
+                            <div className="p-6">
+                                <h3 className="text-xl font-medium text-gray-800 mb-2 group-hover:text-gray-900 transition-colors">
+                                    {category.title}
+                                </h3>
+                                <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                                    {category.description}
+                                </p>
+
+                                {/* CTA */}
+                                <div className="flex items-center text-black group-hover:text-gray-800 transition-colors">
+                                    <span className="text-sm font-medium">Explore Collection</span>
+                                    <svg
+                                        className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            {/* Hover Line */}
+                            <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-gray-800 to-gray-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                        </Link>
+                    ))}
+                </div>
+
+                {/* Bottom CTA Section */}
+                <div className="mt-20 text-center bg-gray-900 rounded-3xl p-12 text-white">
+                    <h3 className="text-3xl font-light mb-4">
+                        Need Something Custom?
+                    </h3>
+                    <p className="text-gray-300 mb-8 max-w-xl mx-auto">
+                        Our team specializes in creating bespoke solutions tailored to your unique requirements
+                    </p>
+                    <button className="bg-white text-gray-900 px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors duration-300 shadow-lg hover:shadow-xl">
+                        Get in Touch
+                    </button>
+                </div>
+            </div>
+
+            {/* Decorative Elements */}
+            <div className="fixed top-20 right-10 w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 animate-pulse"></div>
+            <div className="fixed bottom-20 left-10 w-20 h-20 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-30 animate-pulse delay-1000"></div>
         </div>
     );
 };
