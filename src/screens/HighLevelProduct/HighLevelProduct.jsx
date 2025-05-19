@@ -80,7 +80,6 @@ const HighLevelProduct = () => {
                                     <div className="flex items-center space-x-4">
                                         <span className="text-white/90 text-lg font-light">
                                         </span>
-
                                     </div>
                                 </div>
                             </div>

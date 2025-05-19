@@ -67,10 +67,10 @@ const ProfileScreen = () => {
                                 </div>
                                 <div className="text-center md:text-left">
                                     <h2 className="text-2xl md:text-3xl font-light text-gray-800">
-                                        {profileData.name}
+                                        {profile?.user?.name}
                                     </h2>
                                     <p className="text-gray-600 font-light">
-                                        {profileData.email}
+                                        {profile?.user?.email}
                                     </p>
 
                                 </div>
@@ -123,7 +123,7 @@ const ProfileScreen = () => {
                                     />
                                 ) : (
                                     <div className="px-4 py-3 bg-white rounded-xl border border-gray-100">
-                                        <span className="text-gray-800 font-light">{profileData.name}</span>
+                                        <span className="text-gray-800 font-light">{profile?.user?.name}</span>
                                     </div>
                                 )}
                             </div>
@@ -143,7 +143,7 @@ const ProfileScreen = () => {
                                     />
                                 ) : (
                                     <div className="px-4 py-3 bg-white rounded-xl border border-gray-100">
-                                        <span className="text-gray-800 font-light">{profileData.email}</span>
+                                        <span className="text-gray-800 font-light">{profile?.user?.email}</span>
                                     </div>
                                 )}
                             </div>
