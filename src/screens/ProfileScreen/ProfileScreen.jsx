@@ -1,47 +1,36 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const ProfileScreen = () => {
+    const { userInfo } = useSelector((state) => state.auth)
     const [isEditing, setIsEditing] = useState(false);
     const [profileData, setProfileData] = useState({
-        name: 'John Doe',
-        email: 'john.doe@example.com',
+        name: userInfo.name,
+        email: userInfo.email,
         password: '••••••••',
         profilePicture: '/api/placeholder/200/200'
     });
 
     const [editData, setEditData] = useState({ ...profileData });
 
-    const handleInputChange = (field, value) => {
-        setEditData({ ...editData, [field]: value });
-    };
 
-    const handleSave = () => {
-        setProfileData({ ...editData });
-        setIsEditing(false);
-    };
-
-    const handleCancel = () => {
-        setEditData({ ...profileData });
-        setIsEditing(false);
-    };
-
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setEditData({ ...editData, profilePicture: e.target.result });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    // const handleImageUpload = (event) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onload = (e) => {
+    //             setEditData({ ...editData, profilePicture: e.target.result });
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <div className="min-h-screen bg-gradient-to-br from-cyan-300 via-teal-200 to-first">
             {/* Header Section */}
             <div className="relative overflow-hidden bg-gradient-to-r from-gray-800 to-gray-900">
                 <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
-                <div className="relative max-w-7xl mx-auto px-6 py-16">
+                <div className="relative max-w-7xl mx-auto  px-6 py-16">
                     <div className="text-center text-white">
                         <h1 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">
                             My Profile
@@ -55,8 +44,8 @@ const ProfileScreen = () => {
             </div>
 
             {/* Main Profile Section */}
-            <div className="max-w-4xl mx-auto px-6 py-16">
-                <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden border border-white/50">
+            <div className="max-w-8xl mx-auto px-6 py-16">
+                <div className="bg-gray-100 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden border border-white/50">
 
                     {/* Profile Header */}
                     <div className="px-8 py-8 border-b border-gray-100/80">
@@ -107,7 +96,7 @@ const ProfileScreen = () => {
                                     <>
                                         <button
                                             onClick={handleCancel}
-                                            className="px-6 py-3 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all duration-300"
+                                            className="px-6 py-3 bg-white text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all duration-300"
                                         >
                                             Cancel
                                         </button>
@@ -137,11 +126,11 @@ const ProfileScreen = () => {
                                         type="text"
                                         value={editData.name}
                                         onChange={(e) => handleInputChange('name', e.target.value)}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none transition-all duration-300 bg-white/50"
+                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none transition-all duration-300 bg-white"
                                         placeholder="Enter your full name"
                                     />
                                 ) : (
-                                    <div className="px-4 py-3 bg-gray-50/50 rounded-xl border border-gray-100">
+                                    <div className="px-4 py-3 bg-white rounded-xl border border-gray-100">
                                         <span className="text-gray-800 font-light">{profileData.name}</span>
                                     </div>
                                 )}
@@ -161,7 +150,7 @@ const ProfileScreen = () => {
                                         placeholder="Enter your email address"
                                     />
                                 ) : (
-                                    <div className="px-4 py-3 bg-gray-50/50 rounded-xl border border-gray-100">
+                                    <div className="px-4 py-3 bg-white rounded-xl border border-gray-100">
                                         <span className="text-gray-800 font-light">{profileData.email}</span>
                                     </div>
                                 )}
@@ -188,7 +177,7 @@ const ProfileScreen = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="px-4 py-3 bg-gray-50/50 rounded-xl border border-gray-100">
+                                    <div className="px-4 py-3 bg-white rounded-xl border border-gray-100">
                                         <span className="text-gray-800 font-light">••••••••</span>
                                     </div>
                                 )}
@@ -196,21 +185,15 @@ const ProfileScreen = () => {
                         </div>
 
                         {/* Additional Info Section */}
-                        <div className="mt-12 pt-8 border-t border-gray-100">
-                            <h3 className="text-xl font-light text-gray-800 mb-6">Account Information</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="mt-12 pt-8 text-center border-t border-gray-100">
+                            <h3 className="text-xl flex items-center justify-center?  font-light text-gray-800 mb-6">Account Information</h3>
+                            <div className="flex items-center justify-center">
                                 <div className="text-center p-6 bg-gray-50/30 rounded-xl">
                                     <div className="text-2xl font-light text-gray-800">24</div>
-                                    <div className="text-sm text-gray-600 uppercase tracking-wider">Orders</div>
+                                    <div className="text-sm text-gray-600 uppercase tracking-wider">Save Photos</div>
                                 </div>
-                                <div className="text-center p-6 bg-gray-50/30 rounded-xl">
-                                    <div className="text-2xl font-light text-gray-800">Member</div>
-                                    <div className="text-sm text-gray-600 uppercase tracking-wider">Status</div>
-                                </div>
-                                <div className="text-center p-6 bg-gray-50/30 rounded-xl">
-                                    <div className="text-2xl font-light text-gray-800">2023</div>
-                                    <div className="text-sm text-gray-600 uppercase tracking-wider">Since</div>
-                                </div>
+
+
                             </div>
                         </div>
                     </div>

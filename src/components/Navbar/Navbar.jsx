@@ -30,7 +30,6 @@ export default function Navbar() {
     return (
         <div className="w-full border-b border-gray-200">
             <div className="flex items-center justify-between h-24">
-                {/* Left - User Welcome Section */}
                 <div className="flex items-center pl-4 border-r border-gray-200 h-full min-w-64">
                     <div className="mr-4">
                         <img
@@ -43,9 +42,7 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* Right - Search & Icons */}
                 <div className="flex items-center px-4 mr-6 gap-2">
-                    {/* Search Bar */}
                     <Link to='/'>
                         <HomeIcon size={25} className='text-first hover:text-black transition-all cursor-pointer' />
                     </Link>
@@ -65,24 +62,20 @@ export default function Navbar() {
                         <h1>Inquiry Now</h1>
                     </Link>
 
-                    {/* Bookmark Icon */}
                     <button className="">
                         <FaBookmark className="text-black" size={25} />
                     </button>
 
-                    {/* User Profile Icon */}
                     <Link to='/profile' className="">
                         <User className="text-black" size={28} />
                     </Link >
 
-                    {/* Logout Icon */}
                     <button onClick={toggleModal} className="flex cursor-pointer  items-center gap-1">
                         <LogOut size={25} className='text-blue-500 hover:scale-102 hover:text-blue-500 transition-all ease-in-out duration-300' />
                     </button>
                 </div>
             </div>
 
-            {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-[9999]">
                     <div className="bg-white p-6 rounded-lg w-96">
