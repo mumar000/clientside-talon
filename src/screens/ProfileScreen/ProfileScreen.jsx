@@ -45,7 +45,7 @@ const ProfileScreen = () => {
                                 <div className="relative group">
                                     <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-lg ring-4 ring-white/50">
                                         <img
-                                            src={isEditing ? editData.profilePicture : profileData.profilePicture}
+                                            src='https://randomuser.me/api/portraits/men/32.jpg'
                                             alt="Profile"
                                             className="w-full h-full object-cover"
                                         />
@@ -76,7 +76,7 @@ const ProfileScreen = () => {
                                 </div>
                             </div>
 
-                            <div className="flex gap-3">
+                            {/* <div className="flex gap-3">
                                 {!isEditing ? (
                                     <button
                                         onClick={() => setIsEditing(true)}
@@ -100,7 +100,7 @@ const ProfileScreen = () => {
                                         </button>
                                     </>
                                 )}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 

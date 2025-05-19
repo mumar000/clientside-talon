@@ -33,7 +33,7 @@ export default function Navbar() {
                 <div className="flex items-center pl-4 border-r border-gray-200 h-full min-w-64">
                     <div className="mr-4">
                         <img
-                            src="/api/placeholder/60/60"
+                            src="https://randomuser.me/api/portraits/men/32.jpg"
                             className="rounded-full w-12 h-12 border bg-blue-300"
                         />
                     </div>
