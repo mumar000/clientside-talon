@@ -22,6 +22,8 @@ const Patches = () => {
         currentPage * pageSize
     ) || [];
 
+    const totalPages = Math.ceil(total / pageSize)
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
         document.getElementById('gallery-grid').scrollIntoView({ behavior: 'smooth' });
@@ -73,23 +75,25 @@ const Patches = () => {
                     </div>
 
                     {/* Main Content */}
-                    <div className=" px-4 mb-12">
-                        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div className="max-w-8xl mx-auto px-8 py-16">
+                        <div className="bg-cyan-50/70 backdrop-blur-sm rounded-3xl shadow-xl border border-cyan-50/50 overflow-hidden">
                             {/* Header */}
-                            <div className="flex flex-col md:flex-row items-center justify-between px-8 py-6 border-b border-gray-100">
-                                <h2 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">
-                                    {category} <span className="text-gray-400 text-lg ml-2 font-normal">({total} items)</span>
-                                </h2>
-                                <div className="flex flex-wrap gap-3">
-                                    <Link to="/">
-                                        <Button
-                                            type="primary"
-                                            className="flex items-center bg-gradient-to-r from-blue-500 to-indigo-600"
-                                            icon={<ArrowLeftOutlined />}
-                                        >
-                                            Back
-                                        </Button>
-                                    </Link>
+                            <div className='px-10 py-2 border-b border-gray-100/50'>
+                                <div>
+                                    <h1 className='text-3xl font-light text-gray-800 mb-2'>
+                                        Collection Overview
+                                    </h1>
+                                    <p className='text-gray-600 font-light'>
+                                        Page {currentPage} of {totalPages} Showing {paginatedData.length} of {total} items
+                                    </p>
+                                </div>
+                                <div className='text-right'>
+                                    <div className='text-2xl font-light text-gray-700'>
+                                        {String(currentPage).padStart(2, '0')}
+                                    </div>
+                                    <div className='text-sm text-gray-500 uppercase tracking-wider'>
+                                        Current Page
+                                    </div>
                                 </div>
                             </div>
 
