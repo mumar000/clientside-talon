@@ -1,5 +1,5 @@
 import React from 'react'
-import image from '../../assets/image-2.png'
+import image from '../../assets/banner.jpg'
 import { Link } from 'react-router-dom'
 import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice'
 import { useState } from 'react'
@@ -7,6 +7,7 @@ import { Image, Pagination, Spin, Empty, Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { ScreenLoader } from '../../components/components'
 import { useEffect } from 'react'
+import { ChevronLeft } from 'lucide-react'
 const Patches = () => {
     const [category, setCategory] = useState('Patches');
     const [loading, setLoading] = useState(true)
@@ -34,20 +35,39 @@ const Patches = () => {
     return (
         <>
             {loading ? (<ScreenLoader />) : (
-                <div className="min-h-screen bg-gray-50">
+                <div className="min-h-screen bg-gradient-to-br from-gray-50 via-cyan-50 to-slate-100">
                     {/* Hero Banner */}
-                    <div className="w-full relative mb-8">
+                    <div className="relative overflow-hidden">
+                        <div className='absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-transparent z-10'></div>
                         <img
                             src={image}
                             alt="Zippers Banner"
-                            className="w-full h-64 object-cover object-center"
+                            className="w-full h-92 object-cover object-center"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent flex items-center">
-                            <div className="container mx-auto px-8">
-                                <h1 className="text-4xl font-bold text-white mb-2">Patches Collection</h1>
-                                <p className="text-white/80 max-w-xl">
-                                    Browse our complete collection of high-quality Patches for all your manufacturing needs
-                                </p>
+                        <div className='absolute inset-0  z-20 flex items-center'>
+                            <div className='max-w-8xl mx-auto px-8 w-full'>
+                                <div className='max-w-3xl'>
+                                    <div className='flex items-center mb-4'>
+                                        <Link to='/'>
+                                            <button className='mr-6 p-3 bg-white/30 backdrop-blur-sm hover:bg-white/60 cursor-pointer rounded-full transition-all duration-300 group'>
+                                                <ChevronLeft size={20} className='group-hover:-translate-x-1 transition-transform group-hover:transform group-hover:scale-102' />
+                                            </button>
+                                        </Link>
+                                        <div>
+                                            <h1 className='text-5xl font-light text-white mb-3 tracking wide'>
+                                                {category}
+                                            </h1>
+                                            <div className="flex items-center space-x-4">
+                                                <span className="text-white/90 text-lg font-light">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p className='text-white/80  text-xl font-light leading-relaxed max-w-2xl'>    Customize your clothes with our stylish and durable patches.
+                                        Perfect for adding a unique touch to jackets, bags, and more!
+
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

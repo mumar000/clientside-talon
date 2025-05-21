@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import image from '../../assets/image-2.png';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
-import { Image } from 'antd';
-import banner from '../../assets/banner.jpg'
+import banner from '../../assets/banner.jpg';
+
+import LightGallery from 'lightgallery/react';
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-thumbnail.css';
+
+import lgThumbnail from 'lightgallery/plugins/thumbnail';
+import lgZoom from 'lightgallery/plugins/zoom';
+import ScreenLoader from '../../components/ScreenLoader/ScreenLoader';
 
 const HighLevelProduct = () => {
     const [category, setCategory] = useState('High Level Product');
@@ -11,9 +18,11 @@ const HighLevelProduct = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 50;
 
+    const lightGalleryRef = useRef(null);
+
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
 
-    // Calculate pagination values
+
     const total = data?.pictures?.length || 0;
     const paginatedData = data?.pictures?.slice(
         (currentPage - 1) * pageSize,
@@ -27,6 +36,19 @@ const HighLevelProduct = () => {
         document.getElementById('gallery-grid')?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // Light gallery options
+    const lightGalleryOptions = {
+        speed: 500,
+        plugins: [lgThumbnail, lgZoom],
+        thumbnail: true,
+        animateThumb: true,
+        showThumbByDefault: false,
+        allowMediaOverlap: true,
+        toggleThumb: true,
+        download: true,
+    };
+
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
@@ -35,21 +57,15 @@ const HighLevelProduct = () => {
         return () => clearTimeout(timer);
     }, [category]);
 
-    // Loading screen with custom loader
     if (loading) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
-                <div className="text-center">
-                    <div className="inline-block w-12 h-12 border-4 border-gray-200 border-t-gray-800 rounded-full animate-spin mb-4"></div>
-                    <p className="text-gray-600 text-lg font-light">Loading Collection...</p>
-                </div>
-            </div>
+            <ScreenLoader />
         );
     }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-            {/* Hero Banner */}
+            {/* Main Banner */}
             <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-transparent z-10"></div>
                 <img
@@ -140,45 +156,37 @@ const HighLevelProduct = () => {
                             </div>
                         ) : (
                             <>
-                                {/* Image Grid with Ant Design Images */}
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                                {/* LightGallery Component */}
+                                <LightGallery
+                                    speed={500}
+                                    plugins={[lgThumbnail, lgZoom]}
+                                    elementClassNames="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+                                    ref={lightGalleryRef}
+                                    {...lightGalleryOptions}
+                                >
                                     {paginatedData.map((img, index) => (
-                                        <div
+                                        <a
+                                            href={img}
                                             key={index}
                                             className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 relative"
+                                            data-sub-html={`<h4>Image ${index + 1 + ((currentPage - 1) * pageSize)}</h4>`}
                                         >
-                                            <Image
+                                            <img
                                                 src={img}
                                                 alt={`Gallery image ${index + 1}`}
-                                                style={{
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    objectFit: 'cover',
-                                                    objectPosition: 'center',
-                                                    borderRadius: '12px'
-                                                }}
-                                                className="group-hover:scale-105 transition-transform duration-700"
-                                                wrapperClassName="w-full h-full"
-                                                preview={{
-                                                    mask: (
-                                                        <div className="text-white text-center">
-                                                            <svg className="w-6 h-6 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                            </svg>
-                                                            <div>View Image</div>
-                                                        </div>
-                                                    )
-                                                }}
+                                                className="w-full h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
+                                                loading="lazy"
                                             />
+
                                             {/* Image number overlay */}
                                             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                                 <span className="text-xs font-medium text-gray-700">
                                                     {index + 1 + ((currentPage - 1) * pageSize)}
                                                 </span>
                                             </div>
-                                        </div>
+                                        </a>
                                     ))}
-                                </div>
+                                </LightGallery>
 
                                 {/* Pagination */}
                                 {totalPages > 1 && (

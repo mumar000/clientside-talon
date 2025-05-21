@@ -22,7 +22,6 @@ const Routes = () => {
                     <Route path='/zippers' element={<Zipper />} />
                     <Route path='/inquiry' element={<InquiryPage />} />
                     <Route path='/profile' element={<ProfileScreen />} />
-
                 </Route>
             </Router>
         </div>
