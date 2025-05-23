@@ -104,7 +104,7 @@ const Patches = () => {
                                     </div>
                                 ) : error ? (
                                     <Empty
-                                        description="Failed to load images"
+                                        description={error?.message}
                                         className="py-16"
                                     />
                                 ) : paginatedData.length === 0 ? (
