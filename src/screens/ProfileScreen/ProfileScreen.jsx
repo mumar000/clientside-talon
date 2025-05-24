@@ -1,201 +1,224 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useGetProfileQuery } from '../../store/features/userApiSlice';
+import { useGetProfileQuery, useUpdateProfileMutation, useUpdateProfilePicMutation } from '../../store/features/userApiSlice';
+import { toast } from 'react-toastify';
 
 const ProfileScreen = () => {
-    const { userInfo } = useSelector((state) => state.auth)
-    const { data: profile, isLoading } = useGetProfileQuery(userInfo?._id)
+    const { userInfo } = useSelector((state) => state.auth);
+    const { data: profile, isLoading, isError, refetch } = useGetProfileQuery(userInfo?._id);
+    const [updateProfile, { isLoading: isLoadings }] = useUpdateProfileMutation()
+    const [updateProfilePic, { isLoading: loading }] = useUpdateProfilePicMutation()
     const [isEditing, setIsEditing] = useState(false);
-    const [profileData, setProfileData] = useState({
-        name: profile?.user?.name,
-        email: profile?.user?.email,
-        password: profile?.user?.password,
-        profilePicture: '/api/placeholder/200/200'
+    const [editData, setEditData] = useState({
+        name: '',
+        email: '',
     });
 
-    console.log("user", profile?.user?.name)
+    const fileInputRef = useRef(null)
 
+    // Initialize editData when profile loads
+    useEffect(() => {
+        if (profile?.user) {
+            setEditData({
+                name: profile.user.name || '',
+                email: profile.user.email || '',
+            });
+        }
+    }, [profile]);
+
+    console.log("Profile", profile)
+    const handleInputChange = (field, value) => {
+        setEditData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleSave = async () => {
+        try {
+            const res = await updateProfile({ id: userInfo?._id, name: editData.name, email: editData.email }).unwrap()
+            toast.success(res?.data?.message)
+        } catch (error) {
+            console.log("Error", error?.message)
+        }
+        setIsEditing(false);
+    };
+
+    const handleCancel = () => {
+        setEditData({
+            name: profile?.user?.name || '',
+            email: profile?.user?.email || '',
+            password: ''
+        });
+        setIsEditing(false);
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0]
+        if (!file) return;
+
+        const formData = new FormData()
+        formData.append('file', file)
+
+        try {
+            const res = await updateProfilePic(formData).unwrap()
+            toast.success(res?.data?.msg)
+            refetch()
+        } catch (error) {
+            console.log(error?.message)
+            toast.error(error?.message)
+        }
+    };
+
+    if (isLoading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    if (isError) return <div className="flex justify-center items-center min-h-screen">Error loading profile</div>;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-cyan-300 via-teal-200 to-first">
-            {/* Header Section */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-gray-800 to-gray-900">
-                <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
-                <div className="relative max-w-7xl mx-auto  px-6 py-16">
-                    <div className="text-center text-white">
-                        <h1 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">
-                            My Profile
-                        </h1>
-                        <p className="text-xl font-light opacity-90">
-                            Manage your account information
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-
-            {/* Main Profile Section */}
-            <div className="max-w-8xl mx-auto px-6 py-16">
-                <div className="bg-gray-100 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden border border-white/50">
-
-                    {/* Profile Header */}
-                    <div className="px-8 py-8 border-b border-gray-100/80">
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                            <div className="flex flex-col md:flex-row items-center gap-6">
-                                <div className="relative group">
-                                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-lg ring-4 ring-white/50">
-                                        <img
-                                            src='https://randomuser.me/api/portraits/men/32.jpg'
-                                            alt="Profile"
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </div>
-                                    {isEditing && (
-                                        <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-                                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={handleImageUpload}
-                                                className="hidden"
-                                            />
-                                        </label>
-                                    )}
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+            {/* Floating Glass Morphism Container */}
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden border border-white/30">
+                    {/* Profile Header with Gradient */}
+                    <div className="relative bg-gradient-to-r from-slate-500 via-slate-600 to-slate-900 p-8 text-white">
+                        <div className="absolute inset-0 bg-black/10"></div>
+                        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                            {/* Profile Picture */}
+                            <div className="relative group">
+                                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white/30 shadow-xl">
+                                    <img
+                                        src={profile?.user?.profilePic || 'https://randomuser.me/api/portraits/men/32.jpg'}
+                                        alt="Profile"
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                            e.target.src = 'https://randomuser.me/api/portraits/men/32.jpg';
+                                        }}
+                                    />
                                 </div>
-                                <div className="text-center md:text-left">
-                                    <h2 className="text-2xl md:text-3xl font-light text-gray-800">
-                                        {profile?.user?.name}
-                                    </h2>
-                                    <p className="text-gray-600 font-light">
-                                        {profile?.user?.email}
-                                    </p>
 
-                                </div>
+
+
                             </div>
 
-                            {/* <div className="flex gap-3">
-                                {!isEditing ? (
+                            {/* Profile Info */}
+                            <div className="flex-1 text-center md:text-left">
+                                <h1 className="text-2xl md:text-3xl font-bold mb-2">
+                                    {profile?.user?.name || 'User Name'}
+                                </h1>
+                                <p className="text-white/90 font-light">
+                                    {profile?.user?.email || 'user@example.com'}
+                                </p>
+                                <div className="mt-4 flex justify-center md:justify-start gap-3">
                                     <button
-                                        onClick={() => setIsEditing(true)}
-                                        className="px-6 py-3 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                                        onClick={() => fileInputRef.current.click()}
+                                        className="px-4 py-2 flex items-center justify-center cursor-pointer bg-white/20 hover:bg-white/30 text-white rounded-full font-medium transition-all duration-300 border border-white/30 hover:shadow-lg"
                                     >
-                                        Edit Profile
+                                        {loading ? (<div className='h-6 w-6 border-y-2 boder-l-2 rounded-full border-white animate-spin'></div>) : 'Change Profile Picture'}
                                     </button>
-                                ) : (
-                                    <>
+                                    {!isEditing ? (
                                         <button
-                                            onClick={handleCancel}
-                                            className="px-6 py-3 bg-white text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all duration-300"
+                                            onClick={() => setIsEditing(true)}
+                                            className="px-6 py-2 cursor-pointer bg-white/20 hover:bg-white/30 text-white rounded-full font-medium transition-all duration-300 border border-white/30 hover:shadow-lg"
                                         >
-                                            Cancel
+                                            Edit Profile
                                         </button>
-                                        <button
-                                            onClick={handleSave}
-                                            className="px-6 py-3 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-                                        >
-                                            Save Changes
-                                        </button>
-                                    </>
-                                )}
-                            </div> */}
+                                    ) : (
+                                        <>
+                                            <button
+                                                onClick={handleCancel}
+                                                className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full font-medium transition-all duration-300 border border-white/20"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={handleSave}
+                                                className="px-6 py-2 cursor-pointer bg-white text-indigo-600 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 shadow hover:shadow-lg"
+                                            >
+                                                Save Changes
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Profile Form */}
+                    {/* Profile Content */}
                     <div className="p-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-                            {/* Name Field */}
-                            <div className="space-y-3">
-                                <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider">
-                                    Full Name
-                                </label>
-                                {isEditing ? (
-                                    <input
-                                        type="text"
-                                        value={editData.name}
-                                        onChange={(e) => handleInputChange('name', e.target.value)}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none transition-all duration-300 bg-white"
-                                        placeholder="Enter your full name"
-                                    />
-                                ) : (
-                                    <div className="px-4 py-3 bg-white rounded-xl border border-gray-100">
-                                        <span className="text-gray-800 font-light">{profile?.user?.name}</span>
-                                    </div>
-                                )}
+                        {/* Stats Cards */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+                            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100/50">
+                                <div className="text-3xl font-bold text-indigo-600 mb-2">24</div>
+                                <div className="text-sm font-medium text-gray-500 uppercase tracking-wider">Saved Photos</div>
                             </div>
+                            <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100/50">
+                                <div className="text-3xl font-bold text-purple-600 mb-2">12</div>
+                                <div className="text-sm font-medium text-gray-500 uppercase tracking-wider">Collections</div>
+                            </div>
+                            <div className="bg-gradient-to-br from-green-50 to-teal-50 p-6 rounded-2xl border border-green-100/50">
+                                <div className="text-3xl font-bold text-teal-600 mb-2">3</div>
+                                <div className="text-sm font-medium text-gray-500 uppercase tracking-wider">Years Member</div>
+                            </div>
+                        </div>
 
-                            {/* Email Field */}
-                            <div className="space-y-3">
-                                <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider">
-                                    Email Address
-                                </label>
-                                {isEditing ? (
-                                    <input
-                                        type="email"
-                                        value={editData.email}
-                                        onChange={(e) => handleInputChange('email', e.target.value)}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none transition-all duration-300 bg-white/50"
-                                        placeholder="Enter your email address"
-                                    />
-                                ) : (
-                                    <div className="px-4 py-3 bg-white rounded-xl border border-gray-100">
-                                        <span className="text-gray-800 font-light">{profile?.user?.email}</span>
-                                    </div>
-                                )}
+                        {/* Profile Form */}
+                        <div className="space-y-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {/* Name Field */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider mb-2">
+                                        Full Name
+                                    </label>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={editData.name}
+                                            onChange={(e) => handleInputChange('name', e.target.value)}
+                                            className="w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition-all duration-300"
+                                        />
+                                    ) : (
+                                        <div className="px-4 py-3 bg-white/50 rounded-xl border border-gray-200">
+                                            <span className="text-gray-800">{profile?.user?.name || 'Not provided'}</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Email Field */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider mb-2">
+                                        Email Address
+                                    </label>
+                                    {isEditing ? (
+                                        <input
+                                            type="email"
+                                            value={editData.email}
+                                            onChange={(e) => handleInputChange('email', e.target.value)}
+                                            className="w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition-all duration-300"
+                                        />
+                                    ) : (
+                                        <div className="px-4 py-3 bg-white/50 rounded-xl border border-gray-200">
+                                            <span className="text-gray-800">{profile?.user?.email || 'Not provided'}</span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Password Field */}
-                            <div className="space-y-3 md:col-span-2">
-                                <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider mb-2">
                                     Password
                                 </label>
-                                {isEditing ? (
-                                    <div className="relative">
-                                        <input
-                                            type="password"
-                                            value={editData.password}
-                                            onChange={(e) => handleInputChange('password', e.target.value)}
-                                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none transition-all duration-300 bg-white/50"
-                                            placeholder="Enter new password"
-                                        />
-                                        <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="px-4 py-3 bg-white rounded-xl border border-gray-100">
-                                        <span className="text-gray-800 font-light">••••••••</span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Additional Info Section */}
-                        <div className="mt-12 pt-8 text-center border-t border-gray-100">
-                            <h3 className="text-xl flex items-center justify-center?  font-light text-gray-800 mb-6">Account Information</h3>
-                            <div className="flex items-center justify-center">
-                                <div className="text-center p-6 bg-gray-50/30 rounded-xl">
-                                    <div className="text-2xl font-light text-gray-800">24</div>
-                                    <div className="text-sm text-gray-600 uppercase tracking-wider">Save Photos</div>
+                                <div className="px-4 py-3 bg-white/50 rounded-xl border border-gray-200">
+                                    <span className="text-gray-800">••••••••</span>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {/* Action Cards */}
-
             </div>
-
-
+            <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                className="hidden"
+            />
         </div>
     );
 };

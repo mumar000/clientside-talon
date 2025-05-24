@@ -8,9 +8,11 @@ import { TbPointerQuestion } from "react-icons/tb";
 import { useNavigate, Link, Links } from 'react-router-dom';
 import { BsBookmarks } from "react-icons/bs";
 import { useSelector } from 'react-redux'
+import { useGetProfileQuery } from '../../store/features/userApiSlice';
 export default function Navbar() {
     const [searchText, setSearchText] = useState('');
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+    const { data: profile, isLoading } = useGetProfileQuery()
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -62,8 +64,8 @@ export default function Navbar() {
                 <div className="flex items-center pl-4 border-r border-gray-200 h-full min-w-64">
                     <div className="mr-4">
                         <img
-                            src="https://randomuser.me/api/portraits/men/32.jpg"
-                            className="rounded-full w-12 h-12 border bg-blue-300"
+                            src={profile?.user?.profilePic}
+                            className="rounded-full w-12 h-12  bg-blue-300"
                         />
                     </div>
                     <div className='flex flex-col'>

@@ -1,3 +1,4 @@
+import { User } from "lucide-react";
 import { apiSlice } from "./apiSlice";
 const USER_URL = import.meta.env.DEV
   ? import.meta.env.VITE_LOCAL_URI
@@ -26,6 +27,23 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    updateProfile: builder.mutation({
+      query: (params) => ({
+        url: `${USER_URL}/api/users/profile/${params.id}`,
+        method: "PUT",
+        body: {
+          name: params.name,
+          email: params.email,
+        },
+      }),
+    }),
+    updateProfilePic: builder.mutation({
+      query: (formData) => ({
+        url: `${USER_URL}/api/users/profile/picture`,
+        method: "POST",
+        body: formData,
+      }),
+    }),
     getProfile: builder.query({
       query: (id) => `${USER_URL}/api/users/profile/:${id}`,
     }),
@@ -43,6 +61,8 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
+  useUpdateProfileMutation,
+  useUpdateProfilePicMutation,
   useGetProfileQuery,
   useSubmitInquiryMutation,
 } = userApiSlice;
