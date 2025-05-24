@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
+import ScreenLoader from '../../components/ScreenLoader/ScreenLoader';
 import banner from '../../assets/banner.jpg';
+
 import { IoGridOutline } from "react-icons/io5";
+import { IoImageOutline } from "react-icons/io5";
+import { Heart, List } from 'lucide-react';
+
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-zoom.css';
 import 'lightgallery/css/lg-thumbnail.css';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import { IoImageOutline } from "react-icons/io5";
 import lgZoom from 'lightgallery/plugins/zoom';
-import ScreenLoader from '../../components/ScreenLoader/ScreenLoader';
-import { Heart, List, PictureInPicture, View } from 'lucide-react';
+
 
 const HighLevelProduct = () => {
     const [category, setCategory] = useState('High Level Product');
@@ -216,9 +219,6 @@ const HighLevelProduct = () => {
                                 )}
                                 {viewMode === 'list' && (
                                     <LightGallery
-                                        // onInit={onInit}
-                                        // onBeforeSlide={onBeforeSlide}
-                                        // onAfterSlide={onAfterSlide}
                                         speed={500}
                                         plugins={[lgThumbnail, lgZoom]}
                                         ref={lightGalleryRef}
