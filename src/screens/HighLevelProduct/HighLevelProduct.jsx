@@ -122,14 +122,7 @@ const HighLevelProduct = () => {
                                     Page {currentPage} of {totalPages} • Showing {paginatedData.length} of {total} items
                                 </p>
                             </div>
-                            <div className="text-right">
-                                <div className="text-2xl font-light text-gray-700">
-                                    {String(currentPage).padStart(2, '0')}
-                                </div>
-                                <div className="text-sm text-gray-500 uppercase tracking-wider">
-                                    Current Page
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 

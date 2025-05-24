@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Search, User, LogOut, HomeIcon, Settings, ChevronDown } from 'lucide-react';
 import { FaBookmark, } from "react-icons/fa6";
+import logo from '../../assets/logo.png'
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/features/authSlice';
 import { RiHome9Line } from "react-icons/ri";
@@ -60,8 +61,41 @@ export default function Navbar() {
 
     return (
         <div className="w-full border-b border-gray-200">
-            <div className="flex items-center justify-between h-24">
-                <div className="flex items-center pl-4 border-r border-gray-200 h-full min-w-64">
+            <div className="flex items-center  justify-between h-24">
+
+
+
+                <div className="flex items-center px-4 mr-6 gap-5">
+                    <div className=' px-2'>
+                        <img src={logo} className='w-20' />
+                    </div>
+                    <Link to='/' className='flex flex-row items-center gap-1 hover:border-b-2 transform transition-all'>
+                        <RiHome9Line size={20} className='text-first  transition-all cursor-pointer' />
+                        <h1 className='text-lg text-gray-600'>Home</h1>
+                    </Link>
+
+                    <Link to='inquiry' className=' flex flex-row items-center gap-1 hover:border-b-2  cursor-pointer hover:text-cyan-500 transiton-all '>
+                        <TbPointerQuestion size={20} className='text-first  transition-all cursor-pointer' />
+                        <h1 className='text-lg text-gray-600'>Inquiry Now</h1>
+                    </Link>
+
+                    <Link to='/saved-pictures' className="flex flex-row items-center gap-1 hover:border-b-2 hover:text-cyan-500 transition-all ">
+                        <BsBookmarks className="text-first" size={16} />
+                        <h1 className='text-lg text-gray-600'>Saved Images</h1>
+                    </Link>
+
+                    {/* <Link to='/profile' className="">
+                        <User className="text-black" size={28} />
+                    </Link >
+
+                    <button onClick={toggleModal} className="flex cursor-pointer  items-center gap-1">
+                        <LogOut size={25} className='text-blue-500 hover:scale-102 hover:text-blue-500 transition-all ease-in-out duration-300' />
+                    </button> */}
+                </div>
+
+
+
+                <div className="flex items-center pl-4 border-l border-gray-200 h-full min-w-64">
                     <div className="mr-4">
                         <img
                             src={profile?.user?.profilePic}
@@ -98,31 +132,6 @@ export default function Navbar() {
                             )}
                         </div>
                     </div>
-                </div>
-
-                <div className="flex items-center px-4 mr-6 gap-5">
-                    <Link to='/' className='flex flex-row items-center gap-1 hover:border-b-2 transform transition-all'>
-                        <RiHome9Line size={20} className='text-first  transition-all cursor-pointer' />
-                        <h1 className='text-lg text-gray-600'>Home</h1>
-                    </Link>
-
-                    <Link to='inquiry' className=' flex flex-row items-center gap-1 hover:border-b-2  cursor-pointer hover:text-cyan-500 transiton-all '>
-                        <TbPointerQuestion size={20} className='text-first  transition-all cursor-pointer' />
-                        <h1 className='text-lg text-gray-600'>Inquiry Now</h1>
-                    </Link>
-
-                    <Link to='/saved-pictures' className="flex flex-row items-center gap-1 hover:border-b-2 hover:text-cyan-500 transition-all ">
-                        <BsBookmarks className="text-first" size={16} />
-                        <h1 className='text-lg text-gray-600'>Saved Images</h1>
-                    </Link>
-
-                    {/* <Link to='/profile' className="">
-                        <User className="text-black" size={28} />
-                    </Link >
-
-                    <button onClick={toggleModal} className="flex cursor-pointer  items-center gap-1">
-                        <LogOut size={25} className='text-blue-500 hover:scale-102 hover:text-blue-500 transition-all ease-in-out duration-300' />
-                    </button> */}
                 </div>
             </div>
 
