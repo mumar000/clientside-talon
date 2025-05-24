@@ -8,11 +8,10 @@ const Routes = () => {
     const location = useLocation()
     return (
         <div>
-            <Router>
-                <Route path='/login' element={<AuthScreen />} />
-            </Router>
             {location.pathname !== '/login' && <Navbar />}
             <Router>
+                <Route path='/login' element={<AuthScreen />} />
+
                 <Route element={<PrivateRoute />}>
 
                     <Route path='/' element={<Home />} />

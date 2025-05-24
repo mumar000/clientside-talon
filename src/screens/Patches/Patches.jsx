@@ -16,15 +16,18 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 import lgPager from 'lightgallery/plugins/pager';
 
-import { ChevronLeft, List } from 'lucide-react';
+import { ChevronDown, ChevronLeft, List } from 'lucide-react';
 import { IoGridOutline } from 'react-icons/io5';
 
 const Patches = () => {
     const [category, setCategory] = useState('Patches');
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isDropDown, setIsDropDown] = useState(false)
     const [viewMode, setViewMode] = useState('grid');
     const pageSize = 50;
+
+    const toggleDropDown = () => setIsDropDown(prev => !prev)
 
     // Reference to light gallery
     const lightGalleryRef = useRef(null);
@@ -146,31 +149,65 @@ const Patches = () => {
                                             Page {currentPage} of {totalPages} • Showing {paginatedData.length} of {total} items
                                         </p>
                                     </div>
-                                    <div className="flex items-center space-x-4">
-                                        {/* View Toggle Buttons */}
-                                        <div className="bg-gray-100 rounded-lg p-1 flex">
-                                            <button
-                                                onClick={() => setViewMode('grid')}
-                                                className={`px-3 py-1.5 cursor-pointer rounded-md flex items-center space-x-2 transition-all ${viewMode === 'grid'
-                                                    ? 'bg-white shadow-sm text-gray-800'
-                                                    : 'text-gray-500 hover:text-gray-600'
-                                                    }`}
-                                            >
-                                                <IoGridOutline size={18} />
-                                                <span className="text-sm font-medium">Grid</span>
-                                            </button>
-                                            <button
-                                                onClick={() => setViewMode('list')}
-                                                className={`px-3 py-1.5 rounded-md cursor-pointer flex items-center space-x-2 transition-all ${viewMode === 'list'
-                                                    ? 'bg-white shadow-sm text-gray-800'
-                                                    : 'text-gray-500 hover:text-gray-700'
-                                                    }`}
-                                            >
-                                                <List size={18} />
-                                                <span className="text-sm font-medium">List</span>
-                                            </button>
-                                        </div>
+                                    <div className='flex flex-row item-center gap-1'>
+                                        <div className="flex items-center space-x-4">
+                                            {/* View Toggle Buttons */}
+                                            <div className="bg-gray-100 rounded-lg p-1 flex">
+                                                <button
+                                                    onClick={() => setViewMode('grid')}
+                                                    className={`px-3 py-1.5 cursor-pointer rounded-md flex items-center space-x-2 transition-all ${viewMode === 'grid'
+                                                        ? 'bg-white shadow-sm text-gray-800'
+                                                        : 'text-gray-500 hover:text-gray-600'
+                                                        }`}
+                                                >
+                                                    <IoGridOutline size={18} />
+                                                    <span className="text-sm font-medium">Grid</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => setViewMode('list')}
+                                                    className={`px-3 py-1.5 rounded-md cursor-pointer flex items-center space-x-2 transition-all ${viewMode === 'list'
+                                                        ? 'bg-white shadow-sm text-gray-800'
+                                                        : 'text-gray-500 hover:text-gray-700'
+                                                        }`}
+                                                >
+                                                    <List size={18} />
+                                                    <span className="text-sm font-medium">List</span>
+                                                </button>
+                                            </div>
+                                            <div className="relative inline-block">
+                                                <button
+                                                    onClick={toggleDropDown}
+                                                    className="px-4 py-2 rounded-xl bg-slate-800 text-white flex items-center gap-2"
+                                                >
+                                                    More Categories
+                                                    <ChevronDown size={20} />
+                                                </button>
 
+                                                <div
+                                                    className={`absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-[999] transform transition-all duration-200 ease-in-out origin-top
+        ${isDropDown ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible'}`}
+                                                >
+                                                    <Link
+                                                        to="/zippers"
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    >
+                                                        High Level Products
+                                                    </Link>
+                                                    <Link
+                                                        to="/zippers"
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    >
+                                                        Zippers
+                                                    </Link>
+                                                    <Link
+                                                        to="/papertrim"
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    >
+                                                        Paper Trim
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

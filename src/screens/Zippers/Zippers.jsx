@@ -164,13 +164,13 @@ const Zippers = () => {
         ${isDropDown ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible'}`}
                                     >
                                         <Link
-                                            to="/zippers"
+                                            to="/highlevel"
                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
                                             High Level Products
                                         </Link>
                                         <Link
-                                            to="/paper-trim"
+                                            to="/papertrim"
                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
                                             Paper Trim

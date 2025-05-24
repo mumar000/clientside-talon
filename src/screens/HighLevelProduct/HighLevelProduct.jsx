@@ -6,7 +6,7 @@ import banner from '../../assets/banner.jpg';
 
 import { IoGridOutline } from "react-icons/io5";
 import { IoImageOutline } from "react-icons/io5";
-import { Heart, List } from 'lucide-react';
+import { ChevronDown, Heart, List } from 'lucide-react';
 
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
@@ -20,6 +20,9 @@ const HighLevelProduct = () => {
     const [category, setCategory] = useState('High Level Product');
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isDropDown, setIsDropDown] = useState(false)
+    const toggleDropDown = () => setIsDropDown(prev => !prev)
+
     const [viewMode, setViewMode] = useState('grid')
     const pageSize = 50;
 
@@ -134,24 +137,59 @@ const HighLevelProduct = () => {
                                     Page {currentPage} of {totalPages} • Showing {paginatedData.length} of {total} items
                                 </p>
                             </div>
-                            <div className='bg-gray-100 rounded-lg p-1 flex'>
-                                <button
-                                    onClick={() => setViewMode('grid')}
-                                    className={`px-3 py-1.5 cursor-pointer rounded-md flex items-center transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500 hover:text-gray-600'}`}>
-                                    <IoGridOutline size={20} />
-                                    Grid
-                                </button>
-                                <button
-                                    onClick={() => setViewMode('list')}
-                                    className={`px-3 py-1.5 rounded-md cursor-pointer flex items-center transition-all ${viewMode === 'list'
-                                        ? 'bg-white shadow-sm text-gray-800'
-                                        : 'text-gray-500 hover:text-gray-700'
-                                        }`}
-                                >
-                                    <List size={20} />
-                                    List
-                                </button>
+                            <div className='flex flex-row items-center gap-2'>
 
+                                <div className='bg-gray-100 rounded-lg p-1 flex'>
+                                    <button
+                                        onClick={() => setViewMode('grid')}
+                                        className={`px-3 py-1.5 cursor-pointer rounded-md flex items-center transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500 hover:text-gray-600'}`}>
+                                        <IoGridOutline size={20} />
+                                        Grid
+                                    </button>
+                                    <button
+                                        onClick={() => setViewMode('list')}
+                                        className={`px-3 py-1.5 rounded-md cursor-pointer flex items-center transition-all ${viewMode === 'list'
+                                            ? 'bg-white shadow-sm text-gray-800'
+                                            : 'text-gray-500 hover:text-gray-700'
+                                            }`}
+                                    >
+                                        <List size={20} />
+                                        List
+                                    </button>
+                                </div>
+                                <div className="relative inline-block">
+                                    <button
+                                        onClick={toggleDropDown}
+                                        className="px-4 py-2 rounded-xl bg-slate-800 text-white flex items-center gap-2"
+                                    >
+                                        More Categories
+                                        <ChevronDown size={20} />
+                                    </button>
+
+                                    <div
+                                        className={`absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-[999] transform transition-all duration-200 ease-in-out origin-top
+                                        ${isDropDown ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible'}`}
+                                    >
+                                        <Link
+                                            to="/zippers"
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Zippers
+                                        </Link>
+                                        <Link
+                                            to="/papertrim"
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Paper Trim
+                                        </Link>
+                                        <Link
+                                            to="/patches"
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Patches
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
