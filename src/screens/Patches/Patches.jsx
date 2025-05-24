@@ -7,11 +7,13 @@ import { Image, Pagination, Spin, Empty, Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { ScreenLoader } from '../../components/components'
 import { useEffect } from 'react'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, List } from 'lucide-react'
+import { IoGridOutline } from 'react-icons/io5'
 const Patches = () => {
     const [category, setCategory] = useState('Patches');
     const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1);
+    const [viewMode, setViewMode] = useState('grid')
     const pageSize = 50;
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
 
@@ -79,20 +81,34 @@ const Patches = () => {
                         <div className="bg-cyan-50/70 backdrop-blur-sm rounded-3xl shadow-xl border border-cyan-50/50 overflow-hidden">
                             {/* Header */}
                             <div className='px-10 py-2 border-b border-gray-100/50'>
-                                <div>
-                                    <h1 className='text-3xl font-light text-gray-800 mb-2'>
-                                        Collection Overview
-                                    </h1>
-                                    <p className='text-gray-600 font-light'>
-                                        Page {currentPage} of {totalPages} Showing {paginatedData.length} of {total} items
-                                    </p>
-                                </div>
-                                <div className='text-right'>
-                                    <div className='text-2xl font-light text-gray-700'>
-                                        {String(currentPage).padStart(2, '0')}
+                                <div className="flex items-center justify-between">
+
+                                    <div>
+                                        <h1 className='text-3xl font-light text-gray-800 mb-2'>
+                                            Collection Overview
+                                        </h1>
+                                        <p className='text-gray-600 font-light'>
+                                            Page {currentPage} of {totalPages} Showing {paginatedData.length} of {total} items
+                                        </p>
                                     </div>
-                                    <div className='text-sm text-gray-500 uppercase tracking-wider'>
-                                        Current Page
+                                    <div className='bg-gray-100 rounded-lg p-1 flex'>
+                                        <button
+                                            onClick={() => setViewMode('grid')}
+                                            className={`px-3 py-1.5 cursor-pointer rounded-md flex items-center transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500 hover:text-gray-600'}`}>
+                                            <IoGridOutline size={20} />
+                                            Grid
+                                        </button>
+                                        <button
+                                            onClick={() => setViewMode('list')}
+                                            className={`px-3 py-1.5 rounded-md cursor-pointer flex items-center transition-all ${viewMode === 'list'
+                                                ? 'bg-white shadow-sm text-gray-800'
+                                                : 'text-gray-500 hover:text-gray-700'
+                                                }`}
+                                        >
+                                            <List size={20} />
+                                            List
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>

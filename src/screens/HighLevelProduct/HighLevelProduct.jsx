@@ -2,20 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
 import banner from '../../assets/banner.jpg';
-
+import { IoGridOutline } from "react-icons/io5";
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-zoom.css';
 import 'lightgallery/css/lg-thumbnail.css';
-
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
+import { IoImageOutline } from "react-icons/io5";
 import lgZoom from 'lightgallery/plugins/zoom';
 import ScreenLoader from '../../components/ScreenLoader/ScreenLoader';
+import { Heart, List, PictureInPicture, View } from 'lucide-react';
 
 const HighLevelProduct = () => {
     const [category, setCategory] = useState('High Level Product');
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [viewMode, setViewMode] = useState('grid')
     const pageSize = 50;
 
     const lightGalleryRef = useRef(null);
@@ -48,6 +50,13 @@ const HighLevelProduct = () => {
         download: true,
     };
 
+    useEffect(() => {
+        if (lightGalleryRef.current && lightGalleryRef.current.instance) {
+            setTimeout(() => {
+                lightGalleryRef.current.instance.refresh()
+            })
+        }
+    }, [viewMode])
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -122,7 +131,25 @@ const HighLevelProduct = () => {
                                     Page {currentPage} of {totalPages} • Showing {paginatedData.length} of {total} items
                                 </p>
                             </div>
+                            <div className='bg-gray-100 rounded-lg p-1 flex'>
+                                <button
+                                    onClick={() => setViewMode('grid')}
+                                    className={`px-3 py-1.5 cursor-pointer rounded-md flex items-center transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500 hover:text-gray-600'}`}>
+                                    <IoGridOutline size={20} />
+                                    Grid
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('list')}
+                                    className={`px-3 py-1.5 rounded-md cursor-pointer flex items-center transition-all ${viewMode === 'list'
+                                        ? 'bg-white shadow-sm text-gray-800'
+                                        : 'text-gray-500 hover:text-gray-700'
+                                        }`}
+                                >
+                                    <List size={20} />
+                                    List
+                                </button>
 
+                            </div>
                         </div>
                     </div>
 
@@ -150,36 +177,96 @@ const HighLevelProduct = () => {
                         ) : (
                             <>
                                 {/* LightGallery Component */}
-                                <LightGallery
-                                    speed={500}
-                                    plugins={[lgThumbnail, lgZoom]}
-                                    elementClassNames="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
-                                    ref={lightGalleryRef}
-                                    {...lightGalleryOptions}
-                                >
-                                    {paginatedData.map((img, index) => (
-                                        <a
-                                            href={img}
-                                            key={index}
-                                            className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 relative"
-                                            data-sub-html={`<h4>Image ${index + 1 + ((currentPage - 1) * pageSize)}</h4>`}
-                                        >
-                                            <img
-                                                src={img}
-                                                alt={`Gallery image ${index + 1}`}
-                                                className="w-full h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
-                                                loading="lazy"
-                                            />
+                                {viewMode === 'grid' && (
+                                    <LightGallery
+                                        speed={500}
+                                        plugins={[lgThumbnail, lgZoom]}
+                                        elementClassNames="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+                                        ref={lightGalleryRef}
+                                        {...lightGalleryOptions}
+                                    >
+                                        {paginatedData.map((img, index) => (
+                                            <a
+                                                href={img}
+                                                key={index}
+                                                className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 relative"
+                                                data-sub-html={`<h4>Image ${index + 1 + ((currentPage - 1) * pageSize)}</h4>`}
+                                            >
+                                                <img
+                                                    src={img}
+                                                    alt={`Gallery image ${index + 1}`}
+                                                    className="w-full h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
+                                                    loading="lazy"
+                                                />
 
-                                            {/* Image number overlay */}
-                                            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <span className="text-xs font-medium text-gray-700">
-                                                    {index + 1 + ((currentPage - 1) * pageSize)}
-                                                </span>
-                                            </div>
-                                        </a>
-                                    ))}
-                                </LightGallery>
+                                                {/* Image number overlay */}
+                                                <button
+                                                    onClick={(e) => {
+                                                        console.log('Heart clicked')
+                                                    }
+                                                    }
+                                                    className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                >
+                                                    <Heart size={20} className="text-gray-700" />
+                                                </button>
+
+                                            </a>
+                                        ))}
+                                    </LightGallery>
+                                )}
+                                {viewMode === 'list' && (
+                                    <LightGallery
+                                        // onInit={onInit}
+                                        // onBeforeSlide={onBeforeSlide}
+                                        // onAfterSlide={onAfterSlide}
+                                        speed={500}
+                                        plugins={[lgThumbnail, lgZoom]}
+                                        ref={lightGalleryRef}
+                                        {...lightGalleryOptions}
+                                        elementClassNames="space-y-4"
+                                    >
+                                        {paginatedData.map((img, index) => (
+                                            <a
+                                                href={img}
+                                                key={`list-${index}`}
+                                                className="group flex items-center bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
+                                                data-sub-html={`<h4>Image ${index + 1 + ((currentPage - 1) * pageSize)}</h4>`}
+                                            >
+                                                {/* Thumbnail */}
+                                                <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 relative overflow-hidden">
+                                                    <img
+                                                        src={img}
+                                                        alt={`Gallery image ${index + 1}`}
+                                                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                                        loading="lazy"
+                                                    />
+                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                                </div>
+
+                                                {/* Image details */}
+                                                <div className="p-4 flex-grow flex justify-between items-center">
+                                                    <div>
+                                                        <div className="flex items-center space-x-2 mb-1">
+                                                            <span className="text-sm font-medium text-gray-900">
+                                                                Image {index + 1 + ((currentPage - 1) * pageSize)}
+                                                            </span>
+                                                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-800">
+                                                                {category}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Actions */}
+                                                    <div className="flex items-center space-x-2">
+                                                        <button className="p-2  transition-colors">
+                                                            <IoImageOutline size={30} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        ))}
+                                    </LightGallery>
+                                )}
 
                                 {/* Pagination */}
                                 {totalPages > 1 && (
