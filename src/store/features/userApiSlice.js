@@ -45,7 +45,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getProfile: builder.query({
-      query: (id) => `${USER_URL}/api/users/profile/:${id}`,
+      query: (id) => `${USER_URL}/api/users/profile/${id}`,
     }),
     submitInquiry: builder.mutation({
       query: (data) => ({

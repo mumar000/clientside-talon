@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, User, LogOut, HomeIcon, Settings, ChevronDown } from 'lucide-react';
+import { Search, User, LogOut, HomeIcon, Settings, ChevronDown, ChevronUp } from 'lucide-react';
 import { FaBookmark, } from "react-icons/fa6";
 import logo from '../../assets/logo.png'
 import { useDispatch } from 'react-redux';
@@ -69,17 +69,17 @@ export default function Navbar() {
                     <div className=' px-2'>
                         <img src={logo} className='w-20' />
                     </div>
-                    <Link to='/' className='flex flex-row items-center gap-1 hover:border-b-2 transform transition-all'>
+                    <Link to='/' className='flex flex-row items-center border-cyan-500 gap-1 hover:border-b-2 '>
                         <RiHome9Line size={20} className='text-first  transition-all cursor-pointer' />
                         <h1 className='text-lg text-gray-600'>Home</h1>
                     </Link>
 
-                    <Link to='inquiry' className=' flex flex-row items-center gap-1 hover:border-b-2  cursor-pointer hover:text-cyan-500 transiton-all '>
-                        <TbPointerQuestion size={20} className='text-first  transition-all cursor-pointer' />
+                    <Link to='inquiry' className=' flex flex-row items-center gap-1 hover:border-b-2  cursor-pointer hover:text-cyan-500  '>
+                        <TbPointerQuestion size={20} className='text-first   cursor-pointer' />
                         <h1 className='text-lg text-gray-600'>Inquiry Now</h1>
                     </Link>
 
-                    <Link to='/saved-pictures' className="flex flex-row items-center gap-1 hover:border-b-2 hover:text-cyan-500 transition-all ">
+                    <Link to='/saved-pictures' className="flex flex-row items-center gap-1 hover:border-b-2 hover:text-cyan-500  ">
                         <BsBookmarks className="text-first" size={16} />
                         <h1 className='text-lg text-gray-600'>Saved Images</h1>
                     </Link>
@@ -109,9 +109,10 @@ export default function Navbar() {
                                 onClick={toggleProfileDropdown}
                                 className="flex items-center gap-1 text-gray-600 hover:text-blue-500 transition-colors cursor-pointer focus:outline-none"
                             >
-                                <ChevronDown size={18} /> {/* Using Lucide-react User icon */}
+                                {isProfileDropdownOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />} {/* Using Lucide-react User icon */}
                                 <span className="text-sm">Profile</span>
                             </button>
+                            {/* <ChevronDown size={18} /> */}
 
                             {/* Profile Dropdown Menu */}
                             {isProfileDropdownOpen && (
