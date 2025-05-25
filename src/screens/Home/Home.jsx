@@ -1,16 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import image from '../../assets/hero.jpg';
-import image1 from '../../assets/boxes1.png';
-import image2 from '../../assets/boxes2.png';
-import image3 from '../../assets/boxes3.png';
 import image4 from '../../assets/boxes4.png';
 
-const zippersImg = 'https://taloninternational.com/wp-content/uploads/2018/09/Vintage-Page-Hero-1.png'
+const zippersImg = 'https://taloninternational.com/wp-content/uploads/2018/11/Homepage-Products-Zippers.jpg'
 const patchImg = 'https://taloninternational.com/wp-content/uploads/2018/08/Trim-Patches-Silicone2.jpg'
+const highLevel = 'https://taloninternational.com/wp-content/uploads/2018/10/Trim-Heat-Transfer-Hero--750x730.png'
 
 const categoriesCard = [
-    { image: image1, title: 'High Level Product', route: '/highlevel', description: 'Premium quality materials' },
+    { image: highLevel, title: 'High Level Product', route: '/highlevel', description: 'Premium quality materials' },
     { image: zippersImg, title: 'Zippers', route: '/zippers', description: 'Durable & stylish closures' },
     { image: image4, title: 'Paper Trim', route: '/papertrim', description: 'Elegant finishing touches' },
     { image: patchImg, title: 'Patches', route: '/patches', description: 'Creative design elements' },
@@ -65,7 +62,7 @@ const Home = () => {
                                 <img
                                     src={category.image}
                                     alt={category.title}
-                                    className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110"
+                                    className="w-full h-77 object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
                                 {/* Overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

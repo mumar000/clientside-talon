@@ -11,6 +11,7 @@ import { ChevronDown, Heart, List } from 'lucide-react';
 
 
 import { Image } from 'antd';
+import { useSavePictureMutation } from '../../store/features/userApiSlice';
 
 
 const Zippers = () => {
@@ -24,7 +25,7 @@ const Zippers = () => {
     const lightGalleryRef = useRef(null);
     const toggleDropDown = () => setIsDropDown(prev => !prev)
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
-
+    const [savePicture, { isLoading: isLoadings }] = useSavePictureMutation()
     const total = data?.pictures?.length || 0;
     const paginatedData = data?.pictures?.slice(
         (currentPage - 1) * pageSize,
@@ -38,25 +39,6 @@ const Zippers = () => {
         document.getElementById('gallery-grid')?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // Light gallery options
-    // const lightGalleryOptions = {
-    //     speed: 500,
-    //     plugins: [lgThumbnail, lgZoom],
-    //     thumbnail: true,
-    //     animateThumb: true,
-    //     showThumbByDefault: false,
-    //     allowMediaOverlap: true,
-    //     toggleThumb: true,
-    //     download: true,
-    // };
-
-    useEffect(() => {
-        if (lightGalleryRef.current && lightGalleryRef.current.instance) {
-            setTimeout(() => {
-                lightGalleryRef.current.instance.refresh();
-            });
-        }
-    }, [viewMode]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -70,6 +52,15 @@ const Zippers = () => {
         return <ScreenLoader />;
     }
 
+    const handleSave = async (img) => {
+        try {
+            const res = await savePicture({ bulkUploadId: data?.bulkUploadId, pictureUrl: img }).unwrap()
+            console.log(res?.message)
+        } catch (error) {
+            console.log(error?.message)
+        }
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
             {/* Main Banner */}
@@ -78,7 +69,7 @@ const Zippers = () => {
                 <img
                     src='https://taloninternational.com/wp-content/uploads/2023/06/Zipper-Banner-Opt-2-1920x1080.webp'
                     alt="Zippers Banner"
-                    className="w-full h-120 object-cover object-fit"
+                    className="w-full h-96 object-cover object-fit"
                 />
                 <div className="absolute inset-0 z-20 flex items-center">
                     <div className="max-w-8xl mx-auto px-8 w-full">
@@ -210,16 +201,12 @@ const Zippers = () => {
                                                         className="w-full  h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
                                                     />
 
-                                                    {/* Heart button overlay */}
+                                                    {/* Save Button */}
                                                     <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            e.preventDefault();
-                                                            console.log('Heart clicked for image', index + 1);
-                                                        }}
-                                                        className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                        onClick={() => handleSave(img)}
+                                                        className="absolute z-[999] cursor-pointer top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                                                     >
-                                                        <Heart size={20} className="text-gray-700" />
+                                                        <Heart size={20} className="text-red-700" />
                                                     </button>
 
 

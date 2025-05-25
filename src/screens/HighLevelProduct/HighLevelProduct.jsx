@@ -28,7 +28,8 @@ const HighLevelProduct = () => {
 
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
     const [savePicture, { isLoading: isLoadings }] = useSavePictureMutation()
-    console.log("Data", data)
+
+
     const total = data?.pictures?.length || 0;
     const paginatedData = data?.pictures?.slice(
         (currentPage - 1) * pageSize,
@@ -36,7 +37,6 @@ const HighLevelProduct = () => {
     ) || [];
 
     const totalPages = Math.ceil(total / pageSize);
-    console.log("Pictures", paginatedData)
     const handlePageChange = (page) => {
         setCurrentPage(page);
         document.getElementById('gallery-grid')?.scrollIntoView({ behavior: 'smooth' });
@@ -56,13 +56,14 @@ const HighLevelProduct = () => {
         );
     }
 
-    // const handleSave = () => {
-    //     try {
-    //         const res = await savePicture()
-    //     } catch (error) {
-
-    //     }
-    // }
+    const handleSave = async (img) => {
+        try {
+            const res = await savePicture({ bulkUploadId: data?.bulkUploadId, pictureUrl: img }).unwrap()
+            console.log(res?.message)
+        } catch (error) {
+            console.log(error?.message)
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -213,11 +214,7 @@ const HighLevelProduct = () => {
 
                                                     {/* Heart button overlay */}
                                                     <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            e.preventDefault();
-                                                            console.log('Heart clicked for image', index + 1);
-                                                        }}
+                                                        onClick={() => handleSave(img)}
                                                         className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                                                     >
                                                         <Heart size={20} className="text-gray-700" />
