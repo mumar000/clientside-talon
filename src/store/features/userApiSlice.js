@@ -54,6 +54,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    savePicture: builder.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/api/users/save-picture`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -65,4 +72,5 @@ export const {
   useUpdateProfilePicMutation,
   useGetProfileQuery,
   useSubmitInquiryMutation,
+  useSavePictureMutation,
 } = userApiSlice;

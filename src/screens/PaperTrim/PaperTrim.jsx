@@ -80,7 +80,7 @@ const PaperTrim = () => {
             <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-transparent z-10"></div>
                 <img
-                    src={image}
+                    src='https://taloninternational.com/wp-content/uploads/2018/08/Trim-Paper-Trim-2.png'
                     alt="Paper Trim Banner"
                     className="w-full h-96 object-cover"
                 />
@@ -101,7 +101,7 @@ const PaperTrim = () => {
                                     </button>
                                 </Link>
                                 <div>
-                                    <h1 className="text-5xl font-light text-white mb-3 tracking-wide">
+                                    <h1 className="text-6xl font-bold text-white mb-3 tracking-wide">
                                         {category} Collection
                                     </h1>
                                     <div className="flex items-center space-x-4">
@@ -110,7 +110,7 @@ const PaperTrim = () => {
                                     </div>
                                 </div>
                             </div>
-                            <p className="text-white/80 text-xl font-light leading-relaxed max-w-2xl">
+                            <p className="text-white/80 text-xl font-medium leading-relaxed max-w-2xl">
                                 Browse our complete collection of high-quality paper trim designs for all your manufacturing and creative needs.
                             </p>
                         </div>

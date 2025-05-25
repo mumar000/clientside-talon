@@ -6,11 +6,14 @@ import image2 from '../../assets/boxes2.png';
 import image3 from '../../assets/boxes3.png';
 import image4 from '../../assets/boxes4.png';
 
+const zippersImg = 'https://taloninternational.com/wp-content/uploads/2018/09/Vintage-Page-Hero-1.png'
+const patchImg = 'https://taloninternational.com/wp-content/uploads/2018/08/Trim-Patches-Silicone2.jpg'
+
 const categoriesCard = [
     { image: image1, title: 'High Level Product', route: '/highlevel', description: 'Premium quality materials' },
-    { image: image3, title: 'Zippers', route: '/zippers', description: 'Durable & stylish closures' },
+    { image: zippersImg, title: 'Zippers', route: '/zippers', description: 'Durable & stylish closures' },
     { image: image4, title: 'Paper Trim', route: '/papertrim', description: 'Elegant finishing touches' },
-    { image: image2, title: 'Patches', route: '/patches', description: 'Creative design elements' },
+    { image: patchImg, title: 'Patches', route: '/patches', description: 'Creative design elements' },
 ];
 
 const Home = () => {
@@ -20,17 +23,17 @@ const Home = () => {
             <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent z-10"></div>
                 <img
-                    src={image}
+                    src='https://taloninternational.com/wp-content/uploads/2018/06/Home-Page-Creative-1-1-1920x1080.png'
                     alt="Hero Banner"
-                    className="w-full h-70 bg-center object-cover"
+                    className="w-full h-72 object-cover"
                 />
                 <div className="absolute inset-0 z-20 flex items-center justify-center">
                     <div className="text-center text-white">
-                        <h1 className="text-5xl font-light mb-4 tracking-wide">
-                            Craft Excellence
+                        <h1 className="text-7xl font-bold mb-4 tracking-wide">
+                            EVERY. DETAIL. MATTERS.
                         </h1>
-                        <p className="text-xl font-light opacity-90">
-                            Discover our curated collection
+                        <p className="text-2xl font-medium opacity-90">
+                            OVER 128 YEARS OF QUALITY SERVICE
                         </p>
                     </div>
                 </div>
@@ -40,7 +43,7 @@ const Home = () => {
             <div className="max-w-7xl mx-auto px-6 py-16">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl font-light text-gray-800 mb-4">
+                    <h2 className="text-4xl font-bold text-gray-800 mb-4">
                         Our Collections
                     </h2>
                     <div className="w-24 h-0.5 bg-gray-400 mx-auto mb-6"></div>

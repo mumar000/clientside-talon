@@ -101,7 +101,7 @@ const Patches = () => {
                     <div className="relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-transparent z-10"></div>
                         <img
-                            src={image}
+                            src='https://taloninternational.com/wp-content/uploads/2018/08/Patches-HERO-Background-3-.png'
                             alt="Patches Banner"
                             className="w-full h-92 object-cover object-center"
                         />
@@ -118,7 +118,7 @@ const Patches = () => {
                                             </button>
                                         </Link>
                                         <div>
-                                            <h1 className="text-5xl font-light text-white mb-3 tracking-wide">
+                                            <h1 className="text-6xl font-bold  text-white mb-3 tracking-wide">
                                                 {category}
                                             </h1>
                                             <div className="flex items-center space-x-4">
@@ -126,7 +126,7 @@ const Patches = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <p className="text-white/80 text-xl font-light leading-relaxed max-w-2xl">
+                                    <p className="text-white/80 text-xl font-medium leading-relaxed max-w-2xl">
                                         Customize your clothes with our stylish and durable patches.
                                         Perfect for adding a unique touch to jackets, bags, and more!
                                     </p>

@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+//Local Import
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
 import ScreenLoader from '../../components/ScreenLoader/ScreenLoader';
 import banner from '../../assets/banner.jpg';
+import { GalleryViewMode } from '../../components/components';
 
-import { IoGridOutline } from "react-icons/io5";
+//Icons
 import { IoImageOutline } from "react-icons/io5";
 import { ChevronDown, Heart, List } from 'lucide-react';
 
-import LightGallery from 'lightgallery/react';
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-thumbnail.css';
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
+//Ant Design
+import { Image } from 'antd';
 
+//Api Calls
+import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
+import { useSavePictureMutation } from '../../store/features/userApiSlice';
 
 const HighLevelProduct = () => {
     const [category, setCategory] = useState('High Level Product');
@@ -26,11 +26,9 @@ const HighLevelProduct = () => {
     const [viewMode, setViewMode] = useState('grid')
     const pageSize = 50;
 
-    const lightGalleryRef = useRef(null);
-
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
-
-
+    const [savePicture, { isLoading: isLoadings }] = useSavePictureMutation()
+    console.log("Data", data)
     const total = data?.pictures?.length || 0;
     const paginatedData = data?.pictures?.slice(
         (currentPage - 1) * pageSize,
@@ -38,31 +36,11 @@ const HighLevelProduct = () => {
     ) || [];
 
     const totalPages = Math.ceil(total / pageSize);
-
+    console.log("Pictures", paginatedData)
     const handlePageChange = (page) => {
         setCurrentPage(page);
         document.getElementById('gallery-grid')?.scrollIntoView({ behavior: 'smooth' });
     };
-
-    // Light gallery options
-    const lightGalleryOptions = {
-        speed: 500,
-        plugins: [lgThumbnail, lgZoom],
-        thumbnail: true,
-        animateThumb: true,
-        showThumbByDefault: false,
-        allowMediaOverlap: true,
-        toggleThumb: true,
-        download: true,
-    };
-
-    useEffect(() => {
-        if (lightGalleryRef.current && lightGalleryRef.current.instance) {
-            setTimeout(() => {
-                lightGalleryRef.current.instance.refresh()
-            })
-        }
-    }, [viewMode])
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -78,13 +56,21 @@ const HighLevelProduct = () => {
         );
     }
 
+    // const handleSave = () => {
+    //     try {
+    //         const res = await savePicture()
+    //     } catch (error) {
+
+    //     }
+    // }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
             {/* Main Banner */}
             <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-transparent z-10"></div>
                 <img
-                    src={banner}
+                    src='https://taloninternational.com/wp-content/uploads/2018/10/Trim-Labels-Hero-.png'
                     alt="High Level Product Banner"
                     className="w-full h-96 object-cover"
                 />
@@ -105,7 +91,7 @@ const HighLevelProduct = () => {
                                     </button>
                                 </Link>
                                 <div>
-                                    <h1 className="text-5xl font-light text-white mb-3 tracking-wide">
+                                    <h1 className="text-6xl font-bold text-white mb-3 tracking-wide">
                                         {category}
                                     </h1>
                                     <div className="flex items-center space-x-4">
@@ -114,7 +100,7 @@ const HighLevelProduct = () => {
                                     </div>
                                 </div>
                             </div>
-                            <p className="text-white/80 text-xl font-light leading-relaxed max-w-2xl">
+                            <p className="text-white/80 text-xl font-medium leading-relaxed max-w-2xl">
                                 Discover our curated collection of high-quality products, meticulously designed for excellence and crafted with precision.
                             </p>
                         </div>
@@ -138,25 +124,7 @@ const HighLevelProduct = () => {
                                 </p>
                             </div>
                             <div className='flex flex-row items-center gap-2'>
-
-                                <div className='bg-gray-100 rounded-lg p-1 flex'>
-                                    <button
-                                        onClick={() => setViewMode('grid')}
-                                        className={`px-3 py-1.5 cursor-pointer rounded-md flex items-center transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500 hover:text-gray-600'}`}>
-                                        <IoGridOutline size={20} />
-                                        Grid
-                                    </button>
-                                    <button
-                                        onClick={() => setViewMode('list')}
-                                        className={`px-3 py-1.5 rounded-md cursor-pointer flex items-center transition-all ${viewMode === 'list'
-                                            ? 'bg-white shadow-sm text-gray-800'
-                                            : 'text-gray-500 hover:text-gray-700'
-                                            }`}
-                                    >
-                                        <List size={20} />
-                                        List
-                                    </button>
-                                </div>
+                                <GalleryViewMode viewMode={viewMode} setViewMode={setViewMode} />
                                 <div className="relative inline-block">
                                     <button
                                         onClick={toggleDropDown}
@@ -217,94 +185,110 @@ const HighLevelProduct = () => {
                             </div>
                         ) : (
                             <>
-                                {/* LightGallery Component */}
-                                {viewMode === 'grid' && (
-                                    <LightGallery
-                                        speed={500}
-                                        plugins={[lgThumbnail, lgZoom]}
-                                        elementClassNames="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
-                                        ref={lightGalleryRef}
-                                        {...lightGalleryOptions}
-                                    >
-                                        {paginatedData.map((img, index) => (
-                                            <a
-                                                href={img}
-                                                key={index}
-                                                className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 relative"
-                                                data-sub-html={`<h4>Image ${index + 1 + ((currentPage - 1) * pageSize)}</h4>`}
-                                            >
-                                                <img
-                                                    src={img}
-                                                    alt={`Gallery image ${index + 1}`}
-                                                    className="w-full h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
-                                                    loading="lazy"
-                                                />
-
-                                                {/* Image number overlay */}
-                                                <button
-                                                    onClick={(e) => {
-                                                        console.log('Heart clicked')
-                                                    }
-                                                    }
-                                                    className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                {/* Ant Design Image Gallery */}
+                                <Image.PreviewGroup
+                                    preview={{
+                                        onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
+                                    }}
+                                >
+                                    {viewMode === 'grid' && (
+                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                                            {paginatedData.map((img, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 relative"
                                                 >
-                                                    <Heart size={20} className="text-gray-700" />
-                                                </button>
-
-                                            </a>
-                                        ))}
-                                    </LightGallery>
-                                )}
-                                {viewMode === 'list' && (
-                                    <LightGallery
-                                        speed={500}
-                                        plugins={[lgThumbnail, lgZoom]}
-                                        ref={lightGalleryRef}
-                                        {...lightGalleryOptions}
-                                        elementClassNames="space-y-4"
-                                    >
-                                        {paginatedData.map((img, index) => (
-                                            <a
-                                                href={img}
-                                                key={`list-${index}`}
-                                                className="group flex items-center bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
-                                                data-sub-html={`<h4>Image ${index + 1 + ((currentPage - 1) * pageSize)}</h4>`}
-                                            >
-                                                {/* Thumbnail */}
-                                                <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 relative overflow-hidden">
-                                                    <img
+                                                    <Image
                                                         src={img}
                                                         alt={`Gallery image ${index + 1}`}
-                                                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                                                        loading="lazy"
-                                                    />
-                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                                </div>
+                                                        className="w-full h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '100%',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '12px'
+                                                        }}
 
-                                                {/* Image details */}
-                                                <div className="p-4 flex-grow flex justify-between items-center">
-                                                    <div>
-                                                        <div className="flex items-center space-x-2 mb-1">
-                                                            <span className="text-sm font-medium text-gray-900">
-                                                                Image {index + 1 + ((currentPage - 1) * pageSize)}
-                                                            </span>
-                                                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-800">
-                                                                {category}
-                                                            </span>
+                                                    />
+
+                                                    {/* Heart button overlay */}
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            e.preventDefault();
+                                                            console.log('Heart clicked for image', index + 1);
+                                                        }}
+                                                        className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                    >
+                                                        <Heart size={20} className="text-gray-700" />
+                                                    </button>
+
+
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {viewMode === 'list' && (
+                                        <div className="space-y-4">
+                                            {paginatedData.map((img, index) => (
+                                                <div
+                                                    key={`list-${index}`}
+                                                    className="group flex items-center bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
+                                                >
+                                                    {/* Thumbnail */}
+                                                    <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 relative overflow-hidden">
+                                                        <Image
+                                                            src={img}
+                                                            alt={`Gallery image ${index + 1}`}
+                                                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                                            style={{
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                objectFit: 'cover'
+                                                            }}
+                                                            preview={{
+                                                                mask: (
+                                                                    <div className="flex items-center justify-center">
+                                                                        <IoImageOutline size={20} className="text-white" />
+                                                                    </div>
+                                                                )
+                                                            }}
+                                                        />
+                                                        {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div> */}
+                                                    </div>
+
+                                                    {/* Image details */}
+                                                    <div className="p-4 flex-grow flex justify-between items-center">
+                                                        <div>
+                                                            <div className="flex items-center space-x-2 mb-1">
+                                                                <span className="text-sm font-medium text-gray-900">
+                                                                    Image {index + 1 + ((currentPage - 1) * pageSize)}
+                                                                </span>
+                                                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-800">
+                                                                    {category}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Actions */}
+                                                        <div className="flex items-center space-x-2">
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    console.log('Heart clicked for image', index + 1);
+                                                                }}
+                                                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                                            >
+                                                                <Heart size={20} className="text-gray-600" />
+                                                            </button>
                                                         </div>
                                                     </div>
-
-                                                    {/* Actions */}
-                                                    <div className="flex items-center space-x-2">
-                                                        <button className="p-2  transition-colors">
-                                                            <IoImageOutline size={30} />
-                                                        </button>
-                                                    </div>
                                                 </div>
-                                            </a>
-                                        ))}
-                                    </LightGallery>
-                                )}
+                                            ))}
+                                        </div>
+                                    )}
+                                </Image.PreviewGroup>
 
                                 {/* Pagination */}
                                 {totalPages > 1 && (
