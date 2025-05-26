@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
 import { ScreenLoader } from '../../components/components';
 import image from '../../assets/image-2.png';
 
@@ -15,6 +14,7 @@ import 'lightgallery/css/lg-thumbnail.css';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 
+import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
 const PaperTrim = () => {
     const [category, setCategory] = useState('Paper Trim');
     const [loading, setLoading] = useState(true);

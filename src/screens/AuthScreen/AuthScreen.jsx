@@ -18,14 +18,39 @@ export default function AuthScreen() {
             </div>
 
             {/* Right Section - Gray background for images */}
-            <div className="hidden md:block md:w-1/2 bg-gray-100 overflow-hidden">
-                {/* You can add your images here */}
-                <div className='flex flex-row items-center px-8 gap-4'>
-                    <img src={photo1} className='max-w-full ' />
-                    <img src={photo3} className='max-w-full ' />
-                    <img src={photo1} className='max-w-full ' />
+            <div className="hidden md:block md:w-1/2 bg-gray-100 overflow-hidden relative">
+                {/* Centered overlay text */}
+                <div className="absolute inset-0 z-10 flex items-center justify-center">
+                    <h1 className="text-white text-5xl font-extrabold drop-shadow-lg">
+                        Talon International
+                    </h1>
+                </div>
+
+                {/* Image stack */}
+                <div className="flex flex-col">
+                    <img
+                        src="https://taloninternational.com/wp-content/uploads/2018/09/Vintage-Page-Hero-1.png"
+                        className="w-full object-cover"
+                        alt="Vintage"
+                    />
+                    <img
+                        src="https://taloninternational.com/wp-content/uploads/2018/10/Trim-Hardware-Hero-.png"
+                        className="w-full h-auto object-cover"
+                        alt="Trim Hardware"
+                    />
+                    <img
+                        src="https://taloninternational.com/wp-content/uploads/2018/08/Patches-HERO-Background-3-.png"
+                        className="w-full h-auto object-cover"
+                        alt="Patches"
+                    />
+                    <img
+                        src="https://taloninternational.com/wp-content/uploads/2018/10/Packaging-Boxes-Hero-.png"
+                        className="w-full object-cover"
+                        alt="Packaging Boxes"
+                    />
                 </div>
             </div>
+
         </div>
     );
 }

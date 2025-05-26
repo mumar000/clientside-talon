@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 import Routes from './Routes/Routes'
 import { Provider } from 'react-redux'
 import store from './store/store'
+import { Toaster } from 'sonner'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
     <div>
       <BrowserRouter>
         <Provider store={store}>
+          <Toaster />
           <ToastContainer
             position="top-center"
             autoClose={3000}

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 @import "tailwindcss";
 
 
@@ -16,4 +17,8 @@
 /* Light white transparent background */
 .lg-backdrop {
   background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.lexend {
+  font-family: "Lexend", sans-serif;
 }

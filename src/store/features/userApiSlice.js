@@ -61,6 +61,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getSavePictures: builder.query({
+      query: () => `${USER_URL}/api/users/get-savePics`,
+    }),
   }),
 });
 
@@ -73,4 +76,5 @@ export const {
   useGetProfileQuery,
   useSubmitInquiryMutation,
   useSavePictureMutation,
+  useGetSavePicturesQuery,
 } = userApiSlice;

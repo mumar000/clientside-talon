@@ -1,18 +1,23 @@
+//Local Import
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
 import { GalleryViewMode, ScreenLoader } from '../../components/components';
 import image from '../../assets/image-2.png';
 
-
+//Icons
 import { IoGridOutline } from "react-icons/io5";
 import { IoImageOutline } from "react-icons/io5";
 import { ChevronDown, Heart, List } from 'lucide-react';
 
-
+//Antd
 import { Image } from 'antd';
-import { useSavePictureMutation } from '../../store/features/userApiSlice';
 
+//Api Calls
+import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
+import { useSavePictureMutation } from '../../store/features/userApiSlice';
+import { useGetSavePicturesQuery } from '../../store/features/userApiSlice';
+import { toast } from 'sonner';
+import { FaHeart } from 'react-icons/fa6';
 
 const Zippers = () => {
     const [category, setCategory] = useState('Zippers');
@@ -22,10 +27,15 @@ const Zippers = () => {
     const [viewMode, setViewMode] = useState('grid');
     const pageSize = 50;
 
-    const lightGalleryRef = useRef(null);
-    const toggleDropDown = () => setIsDropDown(prev => !prev)
+
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
     const [savePicture, { isLoading: isLoadings }] = useSavePictureMutation()
+    const { data: getPic, isLoading: isSavePicLoading, refetch } = useGetSavePicturesQuery()
+    const savedImages = getPic?.pictures?.flatMap(p => p.pictureUrl)
+
+    const toggleDropDown = () => setIsDropDown(prev => !prev)
+
+
     const total = data?.pictures?.length || 0;
     const paginatedData = data?.pictures?.slice(
         (currentPage - 1) * pageSize,
@@ -55,7 +65,8 @@ const Zippers = () => {
     const handleSave = async (img) => {
         try {
             const res = await savePicture({ bulkUploadId: data?.bulkUploadId, pictureUrl: img }).unwrap()
-            console.log(res?.message)
+            toast.success("Picture Saved")
+            refetch()
         } catch (error) {
             console.log(error?.message)
         }
@@ -190,83 +201,87 @@ const Zippers = () => {
                                 >
                                     {viewMode === 'grid' && (
                                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                                            {paginatedData.map((img, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 relative"
-                                                >
-                                                    <Image
-                                                        src={img}
-                                                        alt={`Gallery image ${index + 1}`}
-                                                        className="w-full  h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
-                                                    />
-
-                                                    {/* Save Button */}
-                                                    <button
-                                                        onClick={() => handleSave(img)}
-                                                        className="absolute z-[999] cursor-pointer top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            {paginatedData.map((img, index) => {
+                                                const isSaved = savedImages.includes(img)
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 relative"
                                                     >
-                                                        <Heart size={20} className="text-red-700" />
-                                                    </button>
+                                                        <Image
+                                                            src={img}
+                                                            alt={`Gallery image ${index + 1}`}
+                                                            className="w-full  h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
+                                                        />
+
+                                                        {/* Save Button */}
+                                                        <button
+                                                            onClick={() => handleSave(img)}
+                                                            className="absolute z-[999] cursor-pointer top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                        >
+                                                            {isSaved ? (<FaHeart size={20} className='text-red-500 ' />) : (<Heart size={20} className="text-gray-700 cursor-pointer" />)}
+                                                        </button>
 
 
-                                                </div>
-                                            ))}
+                                                    </div>
+                                                )
+                                            })}
                                         </div>
                                     )}
 
                                     {viewMode === 'list' && (
                                         <div className="space-y-4">
-                                            {paginatedData.map((img, index) => (
-                                                <div
-                                                    key={`list-${index}`}
-                                                    className="group flex items-center bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
-                                                >
-                                                    {/* Thumbnail */}
-                                                    <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 relative overflow-hidden">
-                                                        <Image
-                                                            src={img}
-                                                            alt={`Gallery image ${index + 1}`}
-                                                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                                                            preview={{
-                                                                mask: (
-                                                                    <div className="flex items-center justify-center">
-                                                                        <IoImageOutline size={20} className="text-white" />
-                                                                    </div>
-                                                                )
-                                                            }}
-                                                        />
-                                                        {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div> */}
-                                                    </div>
+                                            {paginatedData.map((img, index) => {
+                                                const isSaved = savedImages.includes(img)
+                                                return (
+                                                    <div
+                                                        key={`list-${index}`
+                                                        }
+                                                        className="group flex items-center bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
+                                                    >
+                                                        {/* Thumbnail */}
+                                                        < div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 relative overflow-hidden" >
+                                                            <Image
+                                                                src={img}
+                                                                alt={`Gallery image ${index + 1}`}
+                                                                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                                                preview={{
+                                                                    mask: (
+                                                                        <div className="flex items-center justify-center">
+                                                                            <IoImageOutline size={20} className="text-white" />
+                                                                        </div>
+                                                                    )
+                                                                }}
+                                                            />
+                                                            {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div> */}
+                                                        </div>
 
-                                                    {/* Image details */}
-                                                    <div className="p-4 flex-grow flex justify-between items-center">
-                                                        <div>
-                                                            <div className="flex items-center space-x-2 mb-1">
-                                                                <span className="text-sm font-medium text-gray-900">
-                                                                    Image {index + 1 + ((currentPage - 1) * pageSize)}
-                                                                </span>
-                                                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-800">
-                                                                    {category}
-                                                                </span>
+                                                        {/* Image details */}
+                                                        <div className="p-4 flex-grow flex justify-between items-center">
+                                                            <div>
+                                                                <div className="flex items-center space-x-2 mb-1">
+                                                                    <span className="text-sm font-medium text-gray-900">
+                                                                        Image {index + 1 + ((currentPage - 1) * pageSize)}
+                                                                    </span>
+                                                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-800">
+                                                                        {category}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Actions */}
+                                                            <div className="flex items-center space-x-2">
+                                                                <button
+                                                                    onClick={() => handleSave(img)}
+                                                                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                                                >
+                                                                    {isSaved ? (<FaHeart size={20} className='text-red-500 ' />) : (<Heart size={20} className="text-gray-700 cursor-pointer" />)}
+                                                                </button>
                                                             </div>
                                                         </div>
-
-                                                        {/* Actions */}
-                                                        <div className="flex items-center space-x-2">
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    console.log('Heart clicked for image', index + 1);
-                                                                }}
-                                                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                                                            >
-                                                                <Heart size={20} className="text-gray-600" />
-                                                            </button>
-                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))}
+                                                )
+                                            })}
                                         </div>
                                     )}
                                 </Image.PreviewGroup>
@@ -327,8 +342,8 @@ const Zippers = () => {
                         )}
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 
