@@ -5,3 +5,6 @@ export { default as InquiryForm } from "./InquiryForm/InquiryForm";
 export { default as PrivateRoute } from "./PrivateRoute/PrivateRoute";
 export { default as ScreenLoader } from "./ScreenLoader/ScreenLoader";
 export { default as GalleryViewMode } from "./GalleryViewMode/GalleryViewMode";
+export { default as GalleryGridItem } from "./GalleryGridItem/GalleryGridItem";
+export { default as GalleryListItem } from "./GalleryListItem/GalleryListItem";
+export { default as GalleryView } from "./GalleryView/GalleryView";

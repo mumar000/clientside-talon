@@ -1,6 +1,6 @@
 import React from 'react'
 import { Routes as Router, Route } from 'react-router-dom'
-import { AuthScreen, HighLevelProduct, Home, PaperTrim, Patches, ProfileScreen, Zipper } from '../screens/screens'
+import { AuthScreen, HighLevelProduct, Home, PaperTrim, Patches, ProfileScreen, SavedPictures, Zipper } from '../screens/screens'
 import { Navbar, PrivateRoute } from '../components/components'
 import { useLocation } from 'react-router-dom'
 import InquiryPage from '../screens/InquiryPage/InquiryPage'
@@ -21,6 +21,7 @@ const Routes = () => {
                     <Route path='/zippers' element={<Zipper />} />
                     <Route path='/inquiry' element={<InquiryPage />} />
                     <Route path='/profile' element={<ProfileScreen />} />
+                    <Route path='/save-pictures' element={<SavedPictures />} />
                 </Route>
             </Router>
         </div>

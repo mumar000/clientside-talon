@@ -65,33 +65,53 @@ export default function Navbar() {
 
 
 
-                <div className="flex items-center px-4 mr-6 gap-5">
-                    <div className=' px-2'>
-                        <img src={logo} className='w-20' />
+                <div className="flex items-center px-4 mr-6 gap-6">
+                    {/* Logo */}
+                    <div className="px-2">
+                        <img src={logo} className="w-20" alt="Logo" />
                     </div>
-                    <Link to='/' className='flex flex-row items-center border-cyan-500 gap-1 hover:border-b-2 '>
-                        <RiHome9Line size={20} className='text-first  transition-all cursor-pointer' />
-                        <h1 className='text-lg text-gray-600'>Home</h1>
+
+                    {/* Home */}
+                    <Link
+                        to="/"
+                        className="flex items-center gap-2 text-gray-700 hover:text-cyan-500 transition-all group"
+                    >
+                        <RiHome9Line
+                            size={22}
+                            className="text-cyan-500 group-hover:scale-110 transition-transform duration-200"
+                        />
+                        <span className="text-base font-medium group-hover:underline">Home</span>
                     </Link>
 
-                    <Link to='inquiry' className=' flex flex-row items-center gap-1 hover:border-b-2  cursor-pointer hover:text-cyan-500  '>
-                        <TbPointerQuestion size={20} className='text-first   cursor-pointer' />
-                        <h1 className='text-lg text-gray-600'>Inquiry Now</h1>
+                    {/* Inquiry Now */}
+                    <Link
+                        to="/inquiry"
+                        className="flex items-center gap-2 text-gray-700 hover:text-cyan-500 transition-all group"
+                    >
+                        <TbPointerQuestion
+                            size={22}
+                            className="text-cyan-500 group-hover:scale-110 transition-transform duration-200"
+                        />
+                        <span className="text-base font-medium group-hover:underline">
+                            Inquiry Now
+                        </span>
                     </Link>
 
-                    <Link to='/saved-pictures' className="flex flex-row items-center gap-1 hover:border-b-2 hover:text-cyan-500  ">
-                        <BsBookmarks className="text-first" size={16} />
-                        <h1 className='text-lg text-gray-600'>Saved Images</h1>
+                    {/* Saved Images */}
+                    <Link
+                        to="/save-pictures"
+                        className="flex items-center gap-2 text-gray-700 hover:text-cyan-500 transition-all group"
+                    >
+                        <BsBookmarks
+                            size={20}
+                            className="text-cyan-500 group-hover:scale-110 transition-transform duration-200"
+                        />
+                        <span className="text-base font-medium group-hover:underline">
+                            Saved Images
+                        </span>
                     </Link>
-
-                    {/* <Link to='/profile' className="">
-                        <User className="text-black" size={28} />
-                    </Link >
-
-                    <button onClick={toggleModal} className="flex cursor-pointer  items-center gap-1">
-                        <LogOut size={25} className='text-blue-500 hover:scale-102 hover:text-blue-500 transition-all ease-in-out duration-300' />
-                    </button> */}
                 </div>
+
 
 
 

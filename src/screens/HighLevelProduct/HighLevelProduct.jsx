@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import ScreenLoader from '../../components/ScreenLoader/ScreenLoader';
 import banner from '../../assets/banner.jpg';
 import { GalleryViewMode } from '../../components/components';
-
-
+import { GalleryView } from '../../components/components';
 
 //Icons
 import { IoImageOutline } from "react-icons/io5";
@@ -13,7 +12,7 @@ import { ChevronDown, Heart, List } from 'lucide-react';
 import { Toaster, toast } from 'sonner'
 
 //Ant Design
-import { Image } from 'antd';
+import { Image, Pagination, Spin } from 'antd';
 
 //Api Calls
 import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
@@ -300,55 +299,17 @@ const HighLevelProduct = () => {
                                 </Image.PreviewGroup>
 
                                 {/* Pagination */}
-                                {totalPages > 1 && (
-                                    <div className="flex justify-center items-center mt-16 space-x-4">
-                                        <button
-                                            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                                            disabled={currentPage === 1}
-                                            className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
-                                        >
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                            </svg>
-                                        </button>
-
-                                        <div className="flex space-x-2">
-                                            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                                                let pageNum;
-                                                if (totalPages <= 5) {
-                                                    pageNum = i + 1;
-                                                } else if (currentPage <= 3) {
-                                                    pageNum = i + 1;
-                                                } else if (currentPage >= totalPages - 2) {
-                                                    pageNum = totalPages - 4 + i;
-                                                } else {
-                                                    pageNum = currentPage - 2 + i;
-                                                }
-
-                                                return (
-                                                    <button
-                                                        key={pageNum}
-                                                        onClick={() => handlePageChange(pageNum)}
-                                                        className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${currentPage === pageNum
-                                                            ? 'bg-gray-800 text-white shadow-lg'
-                                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                                            }`}
-                                                    >
-                                                        {pageNum}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-
-                                        <button
-                                            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                                            disabled={currentPage === totalPages}
-                                            className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
-                                        >
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </button>
+                                {total > pageSize && (
+                                    <div className="flex justify-center mt-16">
+                                        <Pagination
+                                            current={currentPage}
+                                            pageSize={pageSize}
+                                            total={total}
+                                            onChange={handlePageChange}
+                                            showSizeChanger={false}
+                                            showQuickJumper
+                                            className="custom-pagination"
+                                        />
                                     </div>
                                 )}
                             </>
