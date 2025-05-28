@@ -14,6 +14,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log("Axios interceptor caught error:", error.response?.status);
     if (error.response && error.response.status === 401) {
       store.dispatch(logout());
       window.location.href = "/login";

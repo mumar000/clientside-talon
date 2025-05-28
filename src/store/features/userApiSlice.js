@@ -36,6 +36,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
           email: params.email,
         },
       }),
+      invalidatesTags: ["User"],
     }),
     updateProfilePic: builder.mutation({
       query: (formData) => ({
@@ -43,9 +44,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["User"],
     }),
     getProfile: builder.query({
       query: (id) => `${USER_URL}/api/users/profile/${id}`,
+      providesTags: ["User"],
     }),
     submitInquiry: builder.mutation({
       query: (data) => ({
@@ -60,6 +63,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["User"],
     }),
     getSavePictures: builder.query({
       query: () => `${USER_URL}/api/users/get-savePics`,

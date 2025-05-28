@@ -66,12 +66,12 @@ const ProfileScreen = () => {
             toast.error(error?.message)
         }
     };
-
+    const bgImage = 'https://taloninternational.com/wp-content/uploads/2018/07/WWT-1-5.png'
     if (isLoading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
     if (isError) return <div className="flex justify-center items-center min-h-screen">Error loading profile</div>;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="min-h-screen bg-gradient-to-br bg-center bg-cover bg-no-repeat from-gray-50 to-gray-100" style={{ backgroundImage: `url('${bgImage}')` }}>
             {/* Floating Glass Morphism Container */}
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden border border-white/30">
@@ -142,20 +142,7 @@ const ProfileScreen = () => {
                     {/* Profile Content */}
                     <div className="p-8">
                         {/* Stats Cards */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-                            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100/50">
-                                <div className="text-3xl font-bold text-indigo-600 mb-2">24</div>
-                                <div className="text-sm font-medium text-gray-500 uppercase tracking-wider">Saved Photos</div>
-                            </div>
-                            <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100/50">
-                                <div className="text-3xl font-bold text-purple-600 mb-2">12</div>
-                                <div className="text-sm font-medium text-gray-500 uppercase tracking-wider">Collections</div>
-                            </div>
-                            <div className="bg-gradient-to-br from-green-50 to-teal-50 p-6 rounded-2xl border border-green-100/50">
-                                <div className="text-3xl font-bold text-teal-600 mb-2">3</div>
-                                <div className="text-sm font-medium text-gray-500 uppercase tracking-wider">Years Member</div>
-                            </div>
-                        </div>
+
 
                         {/* Profile Form */}
                         <div className="space-y-8">
