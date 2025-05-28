@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ScreenLoader } from '../../components/components';
 import image from '../../assets/image-2.png';
@@ -7,14 +7,13 @@ import { IoGridOutline } from "react-icons/io5";
 import { IoImageOutline } from "react-icons/io5";
 import { ChevronDown, Heart, List } from 'lucide-react';
 
-import LightGallery from 'lightgallery/react';
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-thumbnail.css';
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
+import { Image, Pagination, Spin } from 'antd';
 
 import { useGetPicByCategoryQuery } from '../../store/features/uploadSlice';
+import { useSavePictureMutation } from '../../store/features/userApiSlice';
+import { useGetSavePicturesQuery } from '../../store/features/userApiSlice';
+import { toast } from 'sonner';
+import { FaHeart } from 'react-icons/fa6';
 const PaperTrim = () => {
     const [category, setCategory] = useState('Paper Trim');
     const [loading, setLoading] = useState(true);
@@ -24,10 +23,13 @@ const PaperTrim = () => {
 
     const pageSize = 50;
 
-    const lightGalleryRef = useRef(null);
     const toggleDropDown = () => setIsDropDown(prev => !prev)
 
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
+    const [savePicture, { isLoading: isLoadings }] = useSavePictureMutation()
+    const { data: getPic, isLoading: isSavePicLoading, refetch } = useGetSavePicturesQuery()
+    const savedImages = getPic?.pictures?.flatMap(p => p.pictureUrl)
+
 
     const total = data?.pictures?.length || 0;
     const paginatedData = data?.pictures?.slice(
@@ -42,25 +44,6 @@ const PaperTrim = () => {
         document.getElementById('gallery-grid')?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // Light gallery options
-    const lightGalleryOptions = {
-        speed: 500,
-        plugins: [lgThumbnail, lgZoom],
-        thumbnail: true,
-        animateThumb: true,
-        showThumbByDefault: false,
-        allowMediaOverlap: true,
-        toggleThumb: true,
-        download: true,
-    };
-
-    useEffect(() => {
-        if (lightGalleryRef.current && lightGalleryRef.current.instance) {
-            setTimeout(() => {
-                lightGalleryRef.current.instance.refresh();
-            });
-        }
-    }, [viewMode]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -72,6 +55,15 @@ const PaperTrim = () => {
 
     if (loading) {
         return <ScreenLoader />;
+    }
+    const handleSave = async (img) => {
+        try {
+            const res = await savePicture({ bulkUploadId: data?.bulkUploadId, pictureUrl: img }).unwrap()
+            toast.success("Picture Saved")
+            refetch()
+        } catch (error) {
+            console.log(error?.message)
+        }
     }
 
     return (
@@ -212,105 +204,109 @@ const PaperTrim = () => {
                             </div>
                         ) : (
                             <>
-                                {/* LightGallery Component */}
-                                {viewMode === 'grid' && (
-                                    <LightGallery
-                                        speed={500}
-                                        plugins={[lgThumbnail, lgZoom]}
-                                        elementClassNames="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
-                                        ref={lightGalleryRef}
-                                        {...lightGalleryOptions}
-                                    >
-                                        {paginatedData.map((img, index) => (
-                                            <a
-                                                href={img}
-                                                key={index}
-                                                className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 bg-gray-100 relative"
-                                                data-sub-html={`<h4>Paper Trim ${index + 1 + ((currentPage - 1) * pageSize)}</h4>`}
-                                            >
-                                                <img
-                                                    src={img}
-                                                    alt={`Paper Trim ${index + 1}`}
-                                                    className="w-full h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-700"
-                                                    loading="lazy"
-                                                />
-
-                                                {/* Heart button overlay */}
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        e.stopPropagation();
-                                                        console.log('Heart clicked for paper trim', index + 1);
-                                                    }}
-                                                    className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                                >
-                                                    <Heart size={20} className="text-gray-700 hover:text-red-500 transition-colors" />
-                                                </button>
-                                            </a>
-                                        ))}
-                                    </LightGallery>
-                                )}
-                                {viewMode === 'list' && (
-                                    <LightGallery
-                                        speed={500}
-                                        plugins={[lgThumbnail, lgZoom]}
-                                        ref={lightGalleryRef}
-                                        {...lightGalleryOptions}
-                                        elementClassNames="space-y-4"
-                                    >
-                                        {paginatedData.map((img, index) => (
-                                            <a
-                                                href={img}
-                                                key={`list-${index}`}
-                                                className="group flex items-center bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-20 sm:h-32"
-                                                data-sub-html={`<h4>Paper Trim ${index + 1 + ((currentPage - 1) * pageSize)}</h4>`}
-                                            >
-                                                {/* Thumbnail */}
-                                                <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 relative overflow-hidden">
-                                                    <img
-                                                        src={img}
-                                                        alt={`Paper Trim ${index + 1}`}
-                                                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                                                        loading="lazy"
-                                                    />
-                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                                </div>
-
-                                                {/* Image details */}
-                                                <div className="p-4 flex-grow flex justify-between items-center">
-                                                    <div>
-                                                        <div className="flex items-center space-x-2 mb-1">
-                                                            <span className="text-sm font-medium text-gray-900">
-                                                                Paper Trim {index + 1 + ((currentPage - 1) * pageSize)}
-                                                            </span>
-                                                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-800">
-                                                                {category}
-                                                            </span>
-                                                        </div>
-                                                        <p className="text-xs text-gray-500">High-quality paper trim design</p>
-                                                    </div>
-
-                                                    {/* Actions */}
-                                                    <div className="flex items-center space-x-2">
-                                                        <button
-                                                            className="p-2 hover:bg-gray-50 rounded-lg transition-colors"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                e.stopPropagation();
-                                                                console.log('Heart clicked for paper trim', index + 1);
+                                <Image.PreviewGroup>
+                                    {viewMode === 'grid' && (
+                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                                            {paginatedData.map((img, index) => {
+                                                const isSaved = savedImages.includes(img)
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        className="group aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-2xl  transition-all duration-500 bg-gray-100 relative"
+                                                    >
+                                                        <Image
+                                                            src={img}
+                                                            alt={`Gallery image ${index + 1}`}
+                                                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                                            style={{
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                objectFit: 'cover'
                                                             }}
+                                                            preview={{
+                                                                mask: (
+                                                                    <div className="flex items-center justify-center">
+                                                                        <IoImageOutline size={20} className="text-white" />
+                                                                    </div>
+                                                                )
+                                                            }}
+                                                        />
+
+                                                        {/* Heart button overlay */}
+                                                        <button
+                                                            onClick={() => handleSave(img)}
+                                                            className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                                                         >
-                                                            <Heart size={20} className="text-gray-400 hover:text-red-500 transition-colors" />
+                                                            {isSaved ? (<FaHeart size={20} className='text-red-500 ' />) : (<Heart size={20} className="text-gray-700 cursor-pointer" />)}
                                                         </button>
-                                                        <div className="p-2">
-                                                            <IoImageOutline size={24} className="text-gray-400" />
+
+
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    )}
+
+                                    {viewMode === 'list' && (
+                                        <div className="space-y-4">
+                                            {paginatedData.map((img, index) => {
+                                                const isSaved = savedImages.includes(img)
+                                                return (
+                                                    <div
+                                                        key={`list-${index}`}
+                                                        className="group flex items-center bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
+                                                    >
+                                                        {/* Thumbnail */}
+                                                        <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 relative overflow-hidden">
+                                                            <Image
+                                                                src={img}
+                                                                alt={`Gallery image ${index + 1}`}
+                                                                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                                                style={{
+                                                                    width: '100%',
+                                                                    height: '100%',
+                                                                    objectFit: 'cover'
+                                                                }}
+                                                                preview={{
+                                                                    mask: (
+                                                                        <div className="flex items-center justify-center">
+                                                                            <IoImageOutline size={20} className="text-white" />
+                                                                        </div>
+                                                                    )
+                                                                }}
+                                                            />
+                                                            {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div> */}
+                                                        </div>
+
+                                                        {/* Image details */}
+                                                        <div className="p-4 flex-grow flex justify-between items-center">
+                                                            <div>
+                                                                <div className="flex items-center space-x-2 mb-1">
+                                                                    <span className="text-sm font-medium text-gray-900">
+                                                                        Image {index + 1 + ((currentPage - 1) * pageSize)}
+                                                                    </span>
+                                                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-800">
+                                                                        {category}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Actions */}
+                                                            <div className="flex items-center space-x-2">
+                                                                <button
+                                                                    onClick={() => handleSave(img)}
+                                                                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                                                >
+                                                                    {isSaved ? (<FaHeart size={20} className='text-red-500 ' />) : (<Heart size={20} className="text-gray-700 cursor-pointer" />)}
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </a>
-                                        ))}
-                                    </LightGallery>
-                                )}
+                                                )
+                                            })}
+                                        </div>
+                                    )}
+                                </Image.PreviewGroup>
 
                                 {/* Pagination */}
                                 {totalPages > 1 && (

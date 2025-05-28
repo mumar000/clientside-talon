@@ -22,6 +22,7 @@ const GalleryView = ({
                         handleSave={handleSave}
                         currentPage={currentPage}
                         pageSize={pageSize}
+                        category={category}
                     />
                 ))}
             </div>
