@@ -118,8 +118,9 @@ export default function Navbar() {
                 <div className="flex items-center pl-4 border-l border-gray-200 h-full min-w-64">
                     <div className="mr-4">
                         <img
-                            src={profile?.user?.profilePic || 'https://randomuser.me/api/portraits/men/32.jpg'}
-                            className="rounded-full w-12 h-12  bg-blue-300"
+                            src={profile?.user?.profilePic || ''}
+                            alt='Profile'
+                            className="rounded-full w-12 h-12  bg-gray-100"
                         />
                     </div>
                     <div className='flex flex-col'>

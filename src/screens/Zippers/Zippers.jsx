@@ -198,7 +198,7 @@ const Zippers = () => {
                                     {viewMode === 'grid' && (
                                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                                             {paginatedData.map((img, index) => {
-                                                const isSaved = savedImages.includes(img)
+                                                const isSaved = savedImages?.includes(img)
                                                 return (
                                                     <div
                                                         key={index}
@@ -228,7 +228,7 @@ const Zippers = () => {
                                     {viewMode === 'list' && (
                                         <div className="space-y-4">
                                             {paginatedData.map((img, index) => {
-                                                const isSaved = savedImages.includes(img)
+                                                const isSaved = savedImages?.includes(img)
                                                 return (
                                                     <div
                                                         key={`list-${index}`
@@ -249,7 +249,7 @@ const Zippers = () => {
                                                                     )
                                                                 }}
                                                             />
-                                                            {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div> */}
+                                                            {/* <div className="absolute in-set-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div> */}
                                                         </div>
 
                                                         {/* Image details */}

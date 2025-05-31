@@ -208,7 +208,7 @@ const PaperTrim = () => {
                                     {viewMode === 'grid' && (
                                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                                             {paginatedData.map((img, index) => {
-                                                const isSaved = savedImages.includes(img)
+                                                const isSaved = savedImages?.includes(img)
                                                 return (
                                                     <div
                                                         key={index}
@@ -250,7 +250,7 @@ const PaperTrim = () => {
                                     {viewMode === 'list' && (
                                         <div className="space-y-4">
                                             {paginatedData.map((img, index) => {
-                                                const isSaved = savedImages.includes(img)
+                                                const isSaved = savedImages?.includes(img)
                                                 return (
                                                     <div
                                                         key={`list-${index}`}

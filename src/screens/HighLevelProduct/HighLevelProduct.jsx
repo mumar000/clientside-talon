@@ -21,7 +21,7 @@ import { useGetSavePicturesQuery } from '../../store/features/userApiSlice';
 import { FaHeart } from 'react-icons/fa6';
 
 const HighLevelProduct = () => {
-    const [category, setCategory] = useState('High Level Product');
+    const [category, setCategory] = useState('High Level Products');
     const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1);
     const [isDropDown, setIsDropDown] = useState(false)
@@ -33,10 +33,9 @@ const HighLevelProduct = () => {
     const { data, isLoading, error } = useGetPicByCategoryQuery(category);
     const [savePicture, { isLoading: isLoadings }] = useSavePictureMutation()
     const { data: getPic, isLoading: isSavePicLoading, refetch } = useGetSavePicturesQuery()
-
+    // console.log(data)
     const savedImage = getPic?.pictures?.flatMap(p => p.pictureUrl)
-
-
+    console.log("Images", getPic)
     const total = data?.pictures?.length || 0;
     const paginatedData = data?.pictures?.slice(
         (currentPage - 1) * pageSize,
@@ -199,7 +198,7 @@ const HighLevelProduct = () => {
                                     {viewMode === 'grid' && (
                                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                                             {paginatedData.map((img, index) => {
-                                                const isSaved = savedImage.includes(img)
+                                                const isSaved = savedImage?.includes(img)
                                                 return (
                                                     <div
                                                         key={index}
@@ -236,7 +235,7 @@ const HighLevelProduct = () => {
                                     {viewMode === 'list' && (
                                         <div className="space-y-4">
                                             {paginatedData.map((img, index) => {
-                                                const isSaved = savedImage.includes(img)
+                                                const isSaved = savedImage?.includes(img)
                                                 return (
                                                     <div
                                                         key={`list-${index}`}

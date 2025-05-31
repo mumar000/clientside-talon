@@ -83,12 +83,10 @@ const ProfileScreen = () => {
                             <div className="relative group">
                                 <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white/30 shadow-xl">
                                     <img
-                                        src={profile?.user?.profilePic || 'https://randomuser.me/api/portraits/men/32.jpg'}
+                                        src={profile?.user?.profilePic || ''}
                                         alt="Profile"
                                         className="w-full h-full object-cover"
-                                        onError={(e) => {
-                                            e.target.src = 'https://randomuser.me/api/portraits/men/32.jpg';
-                                        }}
+
                                     />
                                 </div>
 
