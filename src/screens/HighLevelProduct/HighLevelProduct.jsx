@@ -212,20 +212,22 @@ const HighLevelProduct = () => {
                                                                 width: '100%',
                                                                 height: '100%',
                                                                 objectFit: 'cover',
+                                                                objectPosition: 'center',
                                                                 borderRadius: '12px'
                                                             }}
-
+                                                            wrapperClassName="w-full h-full"
                                                         />
-
                                                         {/* Heart button overlay */}
                                                         <button
                                                             onClick={() => handleSave(img)}
                                                             className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                                                         >
-                                                            {isSaved ? (<FaHeart size={20} className='text-red-500 ' />) : (<Heart size={20} className="text-gray-700 cursor-pointer" />)}
+                                                            {isSaved ? (
+                                                                <FaHeart size={20} className='text-red-500' />
+                                                            ) : (
+                                                                <Heart size={20} className="text-gray-700 cursor-pointer" />
+                                                            )}
                                                         </button>
-
-
                                                     </div>
                                                 )
                                             })}
