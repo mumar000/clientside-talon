@@ -1,35 +1,33 @@
 import { User } from "lucide-react";
 import { apiSlice } from "./apiSlice";
-const USER_URL = import.meta.env.DEV
-  ? import.meta.env.VITE_LOCAL_URI
-  : import.meta.env.VITE_DEPLOYED_URI;
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
-        url: `${USER_URL}/api/users/auth`,
+        url: `/api/users/auth`,
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["User"],
     }),
     register: builder.mutation({
       query: (data) => ({
-        url: `${USER_URL}/api/users`,
+        url: `/api/users`,
         method: "POST",
         body: data,
       }),
     }),
     logout: builder.mutation({
       query: (data) => ({
-        url: `${USER_URL}api/users/logout`,
+        url: `/api/users/logout`,
         method: "POST",
         body: data,
       }),
     }),
     updateProfile: builder.mutation({
       query: (params) => ({
-        url: `${USER_URL}/api/users/profile/${params.id}`,
+        url: `/api/users/profile/${params.id}`,
         method: "PUT",
         body: {
           name: params.name,
@@ -40,33 +38,42 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     updateProfilePic: builder.mutation({
       query: (formData) => ({
-        url: `${USER_URL}/api/users/profile/picture`,
+        url: `/api/users/profile/picture`,
         method: "POST",
         body: formData,
       }),
       invalidatesTags: ["User"],
     }),
     getProfile: builder.query({
-      query: (id) => `${USER_URL}/api/users/profile/${id}`,
+      query: (id) => `/api/users/profile/${id}`,
       providesTags: ["User"],
     }),
     submitInquiry: builder.mutation({
       query: (data) => ({
-        url: `${USER_URL}/api/users/submitInquiry`,
+        url: `/api/users/submitInquiry`,
         method: "POST",
         body: data,
       }),
     }),
     savePicture: builder.mutation({
       query: (data) => ({
-        url: `${USER_URL}/api/users/save-picture`,
+        url: `/api/users/save-picture`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Picture"],
+    }),
+    unsavePicture: builder.mutation({
+      query: (data) => ({
+        url: `/api/users/unsave-picture`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Picture"],
     }),
     getSavePictures: builder.query({
-      query: () => `${USER_URL}/api/users/get-savePics`,
+      query: () => `/api/users/get-savePics`,
+      providesTags: ["Picture"],
     }),
   }),
 });
@@ -80,5 +87,6 @@ export const {
   useGetProfileQuery,
   useSubmitInquiryMutation,
   useSavePictureMutation,
+  useUnsavePictureMutation,
   useGetSavePicturesQuery,
 } = userApiSlice;

@@ -13,6 +13,9 @@ export const uploadAPiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getCategorySlug: builder.query({
+      query: (slug) => `${UPLOAD_URL}/api/upload/getCategory/${slug}`,
+    }),
     getPictures: builder.query({
       query: () => `${UPLOAD_URL}/api/upload/getPictures`,
     }),
@@ -26,4 +29,5 @@ export const {
   useUploadBulkMutation,
   useGetPicturesQuery,
   useGetPicByCategoryQuery,
+  useGetCategorySlugQuery,
 } = uploadAPiSlice;

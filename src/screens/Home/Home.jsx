@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import image4 from "../../assets/boxes4.png";
 import { useGetPicturesQuery } from "../../store/features/uploadSlice";
+import { CardSkeleton } from "../../components/components";
 
 const zippersImg =
   "https://taloninternational.com/wp-content/uploads/2018/11/Homepage-Products-Zippers.jpg";
@@ -10,36 +11,8 @@ const patchImg =
 const highLevel =
   "https://taloninternational.com/wp-content/uploads/2018/10/Trim-Heat-Transfer-Hero--750x730.png";
 
-const categoriesCard = [
-  {
-    image: highLevel,
-    title: "High Level Product",
-    route: "/highlevel",
-    description: "Premium quality materials",
-  },
-  {
-    image: zippersImg,
-    title: "Zippers",
-    route: "/zippers",
-    description: "Durable & stylish closures",
-  },
-  {
-    image: image4,
-    title: "Paper Trim",
-    route: "/papertrim",
-    description: "Elegant finishing touches",
-  },
-  {
-    image: patchImg,
-    title: "Patches",
-    route: "/patches",
-    description: "Creative design elements",
-  },
-];
-
 const Home = () => {
-  const { data: getCategories, isLaoding: loading } = useGetPicturesQuery();
-  console.log(getCategories?.category);
+  const { data: getCategories, isLoading: loading } = useGetPicturesQuery();
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Hero Section */}
@@ -77,61 +50,65 @@ const Home = () => {
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {getCategories?.category.map((category, index) => (
-            <Link
-              to={category._id}
-              key={index}
-              className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white"
-            >
-              {/* Image Container */}
-              <div className="relative overflow-hidden">
-                <img
-                  src={category?.types[0]?.uploaded_Pictures?.[0]}
-                  alt={category.title}
-                  className="w-full h-77 object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        {loading ? (
+          <CardSkeleton count={4} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {getCategories?.category.map((category, index) => (
+              <Link
+                to={category.slug}
+                key={index}
+                className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white"
+              >
+                {/* Image Container */}
+                <div className="relative overflow-hidden">
+                  <img
+                    src={category?.types[0]?.uploaded_Pictures?.[0]}
+                    alt={category.title}
+                    className="w-full h-77 object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                {/* Floating Badge */}
-              </div>
+                  {/* Floating Badge */}
+                </div>
 
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-medium text-gray-800 mb-2 group-hover:text-gray-900 transition-colors">
-                  {category.name}
-                </h3>
-                {/* <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className="text-xl font-medium text-gray-800 mb-2 group-hover:text-gray-900 transition-colors">
+                    {category.name}
+                  </h3>
+                  {/* <p className="text-gray-600 text-sm leading-relaxed mb-4">
                   {category.description}
                 </p> */}
 
-                {/* CTA */}
-                <div className="flex items-center text-black group-hover:text-gray-800 transition-colors">
-                  <span className="text-sm font-medium">
-                    Explore Collection
-                  </span>
-                  <svg
-                    className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
+                  {/* CTA */}
+                  <div className="flex items-center text-black group-hover:text-gray-800 transition-colors">
+                    <span className="text-sm font-medium">
+                      Explore Collection
+                    </span>
+                    <svg
+                      className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
 
-              {/* Hover Line */}
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-gray-800 to-gray-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-            </Link>
-          ))}
-        </div>
+                {/* Hover Line */}
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-gray-800 to-gray-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* Bottom CTA Section */}
         <div className="mt-20 text-center bg-gray-900 rounded-3xl p-12 text-white">
