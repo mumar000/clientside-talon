@@ -90,7 +90,6 @@ const HighLevelProduct = () => {
         pictureUrl: img,
       }).unwrap();
       toast.success("Picture Saved!");
-      refetch();
     } catch (error) {
       console.log(error?.message);
     }
@@ -102,8 +101,7 @@ const HighLevelProduct = () => {
         categoryId: getCategory?.allDetail?._id,
         pictureUrl: img,
       }).unwrap();
-      toast.success("Picture Saved!");
-      refetch();
+      toast.info(res?.message);
     } catch (error) {
       console.log(error?.message);
     }
@@ -273,19 +271,23 @@ const HighLevelProduct = () => {
                               wrapperClassName="w-full h-full"
                             />
                             {/* Heart button overlay */}
-                            <button
-                              onClick={() => handleSave(img)}
-                              className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            >
+                            <div className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               {isSaved ? (
-                                <FaHeart size={20} className="text-red-500" />
+                                <button onClick={() => handleUnsave(img)}>
+                                  <FaHeart
+                                    size={25}
+                                    className="text-red-500 cursor-pointer hover:scale-102 transition-all transform duration-200"
+                                  />
+                                </button>
                               ) : (
-                                <Heart
-                                  size={20}
-                                  className="text-gray-700 cursor-pointer"
-                                />
+                                <button onClick={() => handleSave(img)}>
+                                  <Heart
+                                    size={25}
+                                    className="text-gray-700 cursor-pointer"
+                                  />
+                                </button>
                               )}
-                            </button>
+                            </div>
                           </div>
                         );
                       })}
