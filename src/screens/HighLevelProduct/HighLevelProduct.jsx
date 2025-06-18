@@ -18,10 +18,8 @@ import { Toaster, toast } from "sonner";
 import { Image, Pagination, Spin } from "antd";
 
 //Api Calls
-import {
-  useGetPicByCategoryQuery,
-  useGetCategorySlugQuery,
-} from "../../store/features/uploadSlice";
+import { useGetCategorySlugQuery } from "../../store/features/uploadSlice";
+import { useGetCategoryQuery } from "../../../../frontend/src/store/features/categorySlice";
 import { useSavePictureMutation } from "../../store/features/userApiSlice";
 import {
   useGetSavePicturesQuery,
@@ -42,6 +40,11 @@ const HighLevelProduct = () => {
     isLaoding: loadingSlug,
     error: errorSlug,
   } = useGetCategorySlugQuery(slug);
+  const {
+    data: getAllCategories,
+    isLoading: loadingCat,
+    error: catError,
+  } = useGetCategoryQuery();
 
   const pictures = getCategory?.allDetail?.types?.flatMap(
     (p) => p.uploaded_Pictures
@@ -176,13 +179,13 @@ const HighLevelProduct = () => {
                   setViewMode={setViewMode}
                 />
                 <div className="relative inline-block">
-                  <button
+                  {/* <button
                     onClick={toggleDropDown}
                     className="px-4 py-2 rounded-xl bg-slate-800 text-white flex items-center gap-2"
                   >
                     More Categories
                     <ChevronDown size={20} />
-                  </button>
+                  </button> */}
 
                   <div
                     className={`absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-[999] transform transition-all duration-200 ease-in-out origin-top
