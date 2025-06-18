@@ -271,7 +271,7 @@ const HighLevelProduct = () => {
                               wrapperClassName="w-full h-full"
                             />
                             {/* Heart button overlay */}
-                            <div className="absolute z-[999] top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="absolute z-[999] top-3 left-3  transition-opacity duration-300">
                               {isSaved ? (
                                 <button
                                   onClick={() => handleUnsave(img)}
@@ -291,7 +291,7 @@ const HighLevelProduct = () => {
                                 >
                                   <Heart
                                     size={22} // Consistent size
-                                    className="text-gray-700 cursor-pointer group-hover:text-red-500 transition-colors duration-300" // Grey by default, turns red on hover (for unsaved)
+                                    className="text-gray-700 cursor-pointer hover:text-red-500 transition-colors duration-300" // Grey by default, turns red on hover (for unsaved)
                                   />
                                 </button>
                               )}
