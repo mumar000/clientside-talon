@@ -19,11 +19,6 @@ export default function AuthScreen() {
       {/* Right Section - Gray background for images */}
       <div className="hidden md:block md:w-1/2 bg-gray-100 overflow-hidden relative">
         {/* Centered overlay text */}
-        {/* <div className="absolute inset-0 z-10 flex items-center justify-center">
-                    <h1 className="text-white text-5xl font-extrabold drop-shadow-lg">
-                        Talon International
-                    </h1>
-                </div> */}
 
         {/* Image stack */}
         <div className="flex flex-col">
