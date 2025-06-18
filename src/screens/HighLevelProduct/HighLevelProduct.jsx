@@ -271,19 +271,27 @@ const HighLevelProduct = () => {
                               wrapperClassName="w-full h-full"
                             />
                             {/* Heart button overlay */}
-                            <div className="absolute z-[999] top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="absolute z-[999] top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               {isSaved ? (
-                                <button onClick={() => handleUnsave(img)}>
+                                <button
+                                  onClick={() => handleUnsave(img)}
+                                  className="p-2 rounded-full cursor-pointer bg-white/30 backdrop-blur-sm shadow-md hover:bg-white/50 hover:shadow-lg transition-all duration-300 transform active:scale-95 flex items-center justify-center"
+                                  aria-label="Unsave Image" // Good for accessibility
+                                >
                                   <FaHeart
-                                    size={25}
-                                    className="text-red-500 cursor-pointer hover:scale-102 transition-all transform duration-200"
+                                    size={22} // Slightly smaller for a more refined look, adjust as needed
+                                    className="text-red-500" // Always red when saved
                                   />
                                 </button>
                               ) : (
-                                <button onClick={() => handleSave(img)}>
+                                <button
+                                  onClick={() => handleSave(img)}
+                                  className="p-2 rounded-full bg-white/30 cursor-pointer  backdrop-blur-sm shadow-md hover:bg-white/50 hover:shadow-lg transition-all duration-300 transform active:scale-95 flex items-center justify-center"
+                                  aria-label="Save Image" // Good for accessibility
+                                >
                                   <Heart
-                                    size={25}
-                                    className="text-gray-700 cursor-pointer"
+                                    size={22} // Consistent size
+                                    className="text-gray-700 cursor-pointer group-hover:text-red-500 transition-colors duration-300" // Grey by default, turns red on hover (for unsaved)
                                   />
                                 </button>
                               )}
