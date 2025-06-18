@@ -37,7 +37,6 @@ const HighLevelProduct = () => {
   const { slug } = useParams();
   const [viewMode, setViewMode] = useState("grid");
   const pageSize = 50;
-
   const {
     data: getCategory,
     isLaoding: loadingSlug,
@@ -291,7 +290,7 @@ const HighLevelProduct = () => {
                                 >
                                   <Heart
                                     size={22} // Consistent size
-                                    className="text-gray-700 cursor-pointer hover:text-red-500 transition-colors duration-300" // Grey by default, turns red on hover (for unsaved)
+                                    className="text-gray-700 cursor-pointer hover:text-red-500  transition-colors duration-300" // Grey by default, turns red on hover (for unsaved)
                                   />
                                 </button>
                               )}
