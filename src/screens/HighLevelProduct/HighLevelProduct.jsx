@@ -117,7 +117,7 @@ const HighLevelProduct = () => {
         <img
           src="https://taloninternational.com/wp-content/uploads/2018/10/Trim-Labels-Hero-.png"
           alt="High Level Product Banner"
-          className="w-full h-96 object-cover"
+          className="w-full lg:h-96 md:h-86 h-70  object-cover"
         />
         <div className="absolute inset-0 z-20 flex items-center">
           <div className="max-w-8xl mx-auto px-8 w-full">
@@ -141,7 +141,7 @@ const HighLevelProduct = () => {
                   </button>
                 </Link>
                 <div>
-                  <h1 className="text-6xl font-bold text-white mb-3 tracking-wide">
+                  <h1 className="lg:text-6xl md:text-5xl text-4xl font-bold text-white mb-3 tracking-wide">
                     {getCategory?.allDetail?.name}
                   </h1>
                   <div className="flex items-center space-x-4">
@@ -149,7 +149,7 @@ const HighLevelProduct = () => {
                   </div>
                 </div>
               </div>
-              <p className="text-white/80 text-xl font-medium leading-relaxed max-w-2xl">
+              <p className="text-white/80 lg:text-xl md:text-lg text-md font-bold md:font-medium leading-relaxed max-w-2xl">
                 Discover our curated collection of high-quality products,
                 meticulously designed for excellence and crafted with precision.
               </p>
@@ -159,13 +159,13 @@ const HighLevelProduct = () => {
       </div>
 
       {/* Main Gallery */}
-      <div className="max-w-8xl mx-auto px-8 py-16">
+      <div className="max-w-8xl mx-auto md:px-8 px-2 py-16">
         <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden border border-white/50">
           {/* Gallery Header */}
           <div className="px-10 py-8 border-b border-gray-100/80">
-            <div className="flex items-center justify-between">
+            <div className="flex md:flex-row flex-col gap-2  items-center justify-between">
               <div>
-                <h2 className="text-3xl font-light text-gray-800 mb-2">
+                <h2 className="md:text-4xl text-3xl font-light text-gray-800 mb-2">
                   Gallery Overview
                 </h2>
                 <p className="text-gray-600 font-light">

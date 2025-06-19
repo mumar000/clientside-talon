@@ -1,11 +1,7 @@
-import { User } from "lucide-react"; // This import isn't used in the slice itself, but fine if used elsewhere.
-import { apiSlice } from "./apiSlice"; // Your base API slice
+import { User } from "lucide-react";
+import { apiSlice } from "./apiSlice";
 
 export const userApiSlice = apiSlice.injectEndpoints({
-  // Ensure 'Picture' tag is defined in apiSlice if not already, or here
-  // If apiSlice defines tagTypes globally:
-  // tagTypes: ["User", "Picture"], // This might be in apiSlice.js already.
-
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
@@ -60,29 +56,22 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    // --- OPTIMISTIC UPDATE FOR SAVING PICTURES ---
     savePicture: builder.mutation({
       query: (data) => ({
         url: `/api/users/save-picture`,
         method: "POST",
         body: data,
       }),
-      // `invalidatesTags` will still run after the mutation resolves,
-      // which is fine as it ensures the cache is correct even if our optimistic logic had a subtle bug.
       invalidatesTags: ["Picture"],
-      // Implement optimistic update
       async onQueryStarted(
         { categoryId, pictureUrl },
         { dispatch, queryFulfilled }
       ) {
-        // Optimistically update the 'getSavePictures' query's cached data
         const patchResult = dispatch(
           apiSlice.util.updateQueryData(
-            // Use apiSlice.util
-            "getSavePictures", // The name of the query to update
-            undefined, // The argument to 'getSavePictures' (it takes no arguments, so 'undefined')
+            "getSavePictures",
+            undefined,
             (draft) => {
-              // Ensure draft.pictures exists and is an array
               if (!draft.pictures) {
                 draft.pictures = [];
               }
@@ -92,12 +81,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
               );
 
               if (existingCategoryEntry) {
-                // Category entry exists, add pictureUrl if not already present
                 if (!existingCategoryEntry.pictureUrl.includes(pictureUrl)) {
                   existingCategoryEntry.pictureUrl.push(pictureUrl);
                 }
               } else {
-                // Category entry does not exist, create a new one
                 draft.pictures.push({
                   categoryId,
                   pictureUrl: [pictureUrl],
@@ -108,25 +95,21 @@ export const userApiSlice = apiSlice.injectEndpoints({
         );
 
         try {
-          await queryFulfilled; // Wait for the actual API call to finish
-          // If successful, no need to do anything, the UI is already updated.
+          await queryFulfilled;
         } catch (error) {
-          patchResult.undo(); // If the API call fails, revert the optimistic change
+          patchResult.undo();
           console.error("Optimistic savePicture failed, reverting UI:", error);
-          // You might trigger a toast error from the component's catch block, as it has access to `toast`.
         }
       },
     }),
 
-    // --- OPTIMISTIC UPDATE FOR UNSAVING PICTURES ---
     unsavePicture: builder.mutation({
       query: (data) => ({
         url: `/api/users/unsave-picture`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Picture"], // Still invalidate to ensure consistency
-      // Implement optimistic update
+      invalidatesTags: ["Picture"],
       async onQueryStarted(
         { categoryId, pictureUrl },
         { dispatch, queryFulfilled }
@@ -178,10 +161,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
-    // --- QUERY FOR SAVED PICTURES ---
     getSavePictures: builder.query({
       query: () => `/api/users/get-savePics`,
-      // `providesTags` ensures this query's data can be invalidated or updated
       providesTags: ["Picture"],
     }),
   }),
