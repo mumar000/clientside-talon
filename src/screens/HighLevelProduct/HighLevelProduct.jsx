@@ -19,7 +19,7 @@ import { Image, Pagination, Spin } from "antd";
 
 //Api Calls
 import { useGetCategorySlugQuery } from "../../store/features/uploadSlice";
-import { useGetCategoryQuery } from "../../../../frontend/src/store/features/categorySlice";
+import { useGetPicturesQuery } from "../../store/features/uploadSlice";
 import { useSavePictureMutation } from "../../store/features/userApiSlice";
 import {
   useGetSavePicturesQuery,
@@ -44,7 +44,7 @@ const HighLevelProduct = () => {
     data: getAllCategories,
     isLoading: loadingCat,
     error: catError,
-  } = useGetCategoryQuery();
+  } = useGetPicturesQuery();
 
   const pictures = getCategory?.allDetail?.types?.flatMap(
     (p) => p.uploaded_Pictures
@@ -179,40 +179,31 @@ const HighLevelProduct = () => {
                   setViewMode={setViewMode}
                 />
                 <div className="relative inline-block">
-                  {/* <button
+                  <button
                     onClick={toggleDropDown}
                     className="px-4 py-2 rounded-xl bg-slate-800 text-white flex items-center gap-2"
                   >
                     More Categories
                     <ChevronDown size={20} />
-                  </button> */}
+                  </button>
 
                   <div
                     className={`absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-[999] transform transition-all duration-200 ease-in-out origin-top
-                                        ${
-                                          isDropDown
-                                            ? "scale-100 opacity-100 visible"
-                                            : "scale-95 opacity-0 invisible"
-                                        }`}
+                                ${
+                                  isDropDown
+                                    ? "scale-100 opacity-100 visible"
+                                    : "scale-95 opacity-0 invisible delay-100" // Added delay-100 here
+                                }`}
                   >
-                    <Link
-                      to="/zippers"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Zippers
-                    </Link>
-                    <Link
-                      to="/papertrim"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Paper Trim
-                    </Link>
-                    <Link
-                      to="/patches"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Patches
-                    </Link>
+                    {getAllCategories?.category?.map((item, idx) => (
+                      <Link
+                        to={`/${item?.slug}`}
+                        index={idx}
+                        className="block px-4 py-2 z-[9999] text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {item?.name}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -273,7 +264,7 @@ const HighLevelProduct = () => {
                               wrapperClassName="w-full h-full"
                             />
                             {/* Heart button overlay */}
-                            <div className="absolute z-[999] top-3 left-3  transition-opacity duration-300">
+                            <div className="absolute z-[888] top-3 left-3  transition-opacity duration-300">
                               {isSaved ? (
                                 <button
                                   onClick={() => handleUnsave(img)}
