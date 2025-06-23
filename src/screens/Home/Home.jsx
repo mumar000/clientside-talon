@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// Assuming these imports are still relevant, otherwise they can be removed
-// import image4 from "../../assets/boxes4.png";
 import { useGetPicturesQuery } from "../../store/features/uploadSlice";
 import { CardSkeleton } from "../../components/components";
 

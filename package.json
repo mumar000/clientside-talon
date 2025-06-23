@@ -14,7 +14,7 @@
     "@tailwindcss/vite": "^4.1.6",
     "antd": "^5.25.1",
     "axios": "^1.9.0",
-    "framer-motion": "^12.11.1",
+    "framer-motion": "^12.19.0",
     "lg-autoplay": "^1.2.1",
     "lg-fullscreen": "^1.2.1",
     "lg-hash": "^1.0.4",

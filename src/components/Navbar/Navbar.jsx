@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   User,
@@ -192,7 +193,13 @@ export default function Navbar() {
 
       {/* Mobile/Tablet Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t transform transition-all duration-200 border-gray-200 bg-white">
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="lg:hidden overflow-hidden border-t  border-gray-200 bg-white"
+        >
           <div className="px-4 py-4 space-y-4">
             {/* Mobile Profile Info */}
             <div className="flex items-center gap-3 pb-4 border-b border-gray-200">
@@ -255,7 +262,7 @@ export default function Navbar() {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Logout Modal - unchanged */}
